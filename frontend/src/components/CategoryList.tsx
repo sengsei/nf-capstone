@@ -24,10 +24,14 @@ export default function CategoryList() {
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
+    useEffect(() => {
+        fetchAllCategories();
+    }, [])
+
     useEffect( () => {
-        setTimeout(() => setErrorMessage(''), 10000)
-        fetchAllCategories()
-        }, []
+        const timoutId = setTimeout(() => setErrorMessage(''), 10000)
+        return () => clearTimeout(timoutId)
+        }, [errorMessage]
     )
 
 
