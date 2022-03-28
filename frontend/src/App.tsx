@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import Header from "./components/Header";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+
 
 function App() {
 
-    const [greeting, setGreeting] = useState('')
-
-    useEffect(() => {
-        fetch('/api/greeting', {
-            method: 'GET',
-            headers: {
-                'Accept': 'text/plain'
-            }
-        })
-            .then(response => response.text())
-            .then(text => setGreeting(text))
-            .catch(err => setGreeting('Da ist etwas schief gelaufen'));
-    }, []);
-
     return (
         <div>
-            {greeting}
+            <Header/>
+            <BrowserRouter>
+                <Routes>
+                    <Route>
+
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+            Landing Page
         </div>
     );
 }
