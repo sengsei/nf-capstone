@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+import LandingPage from "./components/LandingPage";
 
 
 function App() {
@@ -9,12 +10,9 @@ function App() {
             <Header/>
             <BrowserRouter>
                 <Routes>
-                    <Route>
-
-                    </Route>
+                    <Route path={'/'} element={<LandingPage/>}/>
                 </Routes>
             </BrowserRouter>
-            Landing Page
         </div>
     );
 }
