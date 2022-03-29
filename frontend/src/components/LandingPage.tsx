@@ -11,7 +11,7 @@ export default function LandingPage() {
                 Hier wird die App beschrieben und es erscheint ein Empfangstext
             </div>
             <button onClick={() => {
-        navigate("/categories")}>Start</button>
+        navigate("/categories")}}>Start</button>
         </div>
     )
 }

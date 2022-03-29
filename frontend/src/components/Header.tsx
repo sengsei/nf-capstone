@@ -4,8 +4,8 @@ export default function Header() {
 
     const navigate = useNavigate()
 
-    const routeToHome = () => {
-        navigate("/categories")
+    const routeToHome = (where: string) => {
+        navigate("/"+where)
     }
 
     return(
