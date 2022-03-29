@@ -14,7 +14,7 @@ function App() {
                 <Routes>
                     <Route path={'/'} element={<LandingPage/>}/>
                     <Route path={'/categories'} element={<CategoryList/>}/>
-                    <Route path={'/questions'} element={<QuestionListTrueFalse/>}/>
+                    <Route path={'/questions/:categoryName'} element={<QuestionListTrueFalse/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
