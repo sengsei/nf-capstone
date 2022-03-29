@@ -35,4 +35,21 @@ class QuestionServiceTest {
         assertThat(actual).isEqualTo(questionList);
     }
 
+    @Test
+    void shouldGetQuestionByCategorie() {
+        Question elem = new Question();
+        elem.setQuestion("Java OOP?");
+        elem.setCategoryName("Java");
+
+        List<Question> questionList = List.of(elem);
+        QuestionRepository repo = Mockito.mock(QuestionRepository.class);
+
+        when(repo.findQuestionByCategoryName("Java")).thenReturn(questionList);
+
+        QuestionService questionService = new QuestionService(repo);
+        List<Question> actual = questionService.findByCategory("Java");
+
+        assertThat(actual).isEqualTo(questionList);
+    }
+
 }

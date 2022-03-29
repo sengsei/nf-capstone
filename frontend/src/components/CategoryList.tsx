@@ -37,15 +37,15 @@ export default function CategoryList() {
         }, [errorMessage]
     )
 
-    const routeToTrueFalseQuestion = () => {
-      navigate("/questions")
+    const routeToTrueFalseQuestion = (categoryName:string) => {
+      navigate(`/questions/${categoryName}`)
     }
 
 
     return (
         <div>
             { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) =>
-                <p key={elem.id}>{elem.categoryName} <button onClick={routeToTrueFalseQuestion}>Wahr/Falsch Fragen</button></p> )}
+                <p key={elem.id}>{elem.categoryName} <button onClick={() => routeToTrueFalseQuestion(elem.categoryName) }>Wahr/Falsch Fragen</button></p> )}
         </div>
     )
 
