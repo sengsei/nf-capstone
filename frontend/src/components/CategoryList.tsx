@@ -20,7 +20,7 @@ export default function CategoryList() {
                 throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
 
             })
-            .then((todosFromBackend: Array<Category>) => setCategories(todosFromBackend))
+            .then((catFromBackend: Array<Category>) => setCategories(catFromBackend))
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
