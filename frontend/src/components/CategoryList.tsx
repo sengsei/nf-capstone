@@ -1,11 +1,13 @@
 import {useEffect, useState} from "react";
 import {Category} from "../model";
+import {useNavigate} from "react-router-dom";
 
 
 export default function CategoryList() {
 
     const [categories, setCategories] = useState([] as Array<Category>)
     const[errorMessage, setErrorMessage] = useState('')
+    const navigate = useNavigate()
 
     const fetchAllCategories = () => {
 
@@ -34,10 +36,14 @@ export default function CategoryList() {
         }, [errorMessage]
     )
 
+    const routeToTrueFalseQuestion = () => {
+      navigate("/questions")
+    }
+
 
     return (
         <div>
-            { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) => <p key={elem.id}>{elem.categoryName}</p> )}
+            { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) => <p key={elem.id}>{elem.categoryName} <button onClick={routeToTrueFalseQuestion}>Wahr/Falsch Fragen</button></p> )}
         </div>
     )
 
