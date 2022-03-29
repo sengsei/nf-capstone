@@ -3,6 +3,7 @@ import {Category} from "../model";
 import {useNavigate} from "react-router-dom";
 
 
+
 export default function CategoryList() {
 
     const [categories, setCategories] = useState([] as Array<Category>)
@@ -43,7 +44,8 @@ export default function CategoryList() {
 
     return (
         <div>
-            { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) => <p key={elem.id}>{elem.categoryName} <button onClick={routeToTrueFalseQuestion}>Wahr/Falsch Fragen</button></p> )}
+            { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) =>
+                <p key={elem.id}>{elem.categoryName} <button onClick={routeToTrueFalseQuestion}>Wahr/Falsch Fragen</button></p> )}
         </div>
     )
 
