@@ -4,16 +4,14 @@ export default function LandingPage() {
 
     const navigate = useNavigate()
 
-    const routeToTrueCategories = () => {
-        navigate("/categories")
-    }
 
     return (
         <div>
             <div>
                 Hier wird die App beschrieben und es erscheint ein Empfangstext
             </div>
-            <button onClick={routeToTrueCategories}>Start</button>
+            <button onClick={() => {
+        navigate("/categories")}>Start</button>
         </div>
     )
 }

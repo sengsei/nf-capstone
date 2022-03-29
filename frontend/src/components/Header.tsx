@@ -13,7 +13,7 @@ export default function Header() {
             <div>Titel</div>
             <button>Login</button>
             <button>Logout</button>
-            <button onClick={routeToHome}>Home</button>
+            <button onClick={() => routeToHome('categories')}>Home</button>
             <button>Konto</button>
         </div>
     )
