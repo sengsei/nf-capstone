@@ -1,12 +1,10 @@
 package de.neuefische.question;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/questions")
@@ -18,5 +16,10 @@ public class QuestionController {
     @GetMapping
     public Collection<Question> getQuestionList(){
         return questionService.getQuestionList();
+    }
+
+    @GetMapping("/{category}")
+    public List<Question> getQuestionListByCategory(@PathVariable String category) {
+        return questionService.findByCategory(category);
     }
 }
