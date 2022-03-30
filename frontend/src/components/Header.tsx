@@ -4,7 +4,7 @@ export default function Header() {
 
     const navigate = useNavigate()
 
-    const routeToHome = (where: string) => {
+    const routeToPath = (where: string) => {
         navigate("/"+where)
     }
 
@@ -13,8 +13,9 @@ export default function Header() {
             <div>Titel</div>
             <button>Login</button>
             <button>Logout</button>
-            <button onClick={() => routeToHome('categories')}>Home</button>
+            <button onClick={() => routeToPath('categories')}>Home</button>
             <button>Konto</button>
+            <button onClick={() => routeToPath('editormenue')}>Editor</button>
         </div>
     )
 }

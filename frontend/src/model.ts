@@ -7,5 +7,5 @@ export interface Question {
     id: string
     categoryName: string
     question: string
-    questionState: boolean
+    questionState: string
 }

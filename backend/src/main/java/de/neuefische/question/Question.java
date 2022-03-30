@@ -14,5 +14,5 @@ public class Question {
     private String id;
     private String categoryName;
     private String question;
-    private Boolean questionState;
+    private String questionState;
 }

@@ -3,6 +3,7 @@ package de.neuefische.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 
@@ -18,5 +19,9 @@ public class QuestionService {
 
     public List<Question> findByCategory(String categoryName) {
         return questionRepository.findQuestionByCategoryName(categoryName);
+    }
+
+    public Question addQuestion(Question question) {
+        return questionRepository.save(question);
     }
 }
