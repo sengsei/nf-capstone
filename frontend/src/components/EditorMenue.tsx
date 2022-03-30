@@ -11,7 +11,7 @@ export default function EditorMenue() {
 
     return(
         <div>
-            <button>Kategorie-Editor</button>
+            <button onClick={() => routeToPath('editorcategories')}>Kategorie-Editor</button>
             <br/>
             <button onClick={() => routeToPath('truefalseedit')}>True/False Editor</button>
         </div>
