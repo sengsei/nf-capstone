@@ -3,10 +3,13 @@ package de.neuefische.category;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CategoryServiceTest {
@@ -29,6 +32,16 @@ class CategoryServiceTest {
 
         assertThat(actual).isEqualTo(categoryList);
 
+    }
+
+    @Test
+    void shouldDeleteCategory(){
+        CategoryRepository repo = Mockito.mock(CategoryRepository.class);
+        CategoryService categoryService = new CategoryService(repo);
+
+        categoryService.deleteCategory("777");
+
+        verify(repo).deleteById("777");
     }
 
 }
