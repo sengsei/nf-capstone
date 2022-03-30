@@ -1,6 +1,7 @@
 package de.neuefische.category;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -20,6 +21,13 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable String id){
         categoryService.deleteCategory(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Collection<Category> addCategory(@RequestBody Category category){
+        categoryService.addCategory(category);
+        return categoryService.getCategoryList();
     }
 
 }
