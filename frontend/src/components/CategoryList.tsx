@@ -2,12 +2,11 @@ import {useEffect, useState} from "react";
 import {Category} from "../model";
 import {useNavigate} from "react-router-dom";
 
-
-
 export default function CategoryList() {
 
     const [categories, setCategories] = useState([] as Array<Category>)
     const[errorMessage, setErrorMessage] = useState('')
+
     const navigate = useNavigate()
 
     const fetchAllCategories = () => {
@@ -41,11 +40,22 @@ export default function CategoryList() {
       navigate(`/questions/${categoryName}`)
     }
 
+    const deleteCategory = (category:Category) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${category.id}`, {
+            method: 'DELETE'
+        })
+            .then(() => fetchAllCategories())
+
+    }
 
     return (
         <div>
-            { errorMessage ? <p>{errorMessage}</p> :  categories.map((elem) =>
-                <p key={elem.id}>{elem.categoryName} <button onClick={() => routeToTrueFalseQuestion(elem.categoryName) }>Wahr/Falsch Fragen</button></p> )}
+            {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
+                <p key={elem.id}>{elem.categoryName}
+                    <button onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Wahr/Falsch Fragen</button>
+                    <button onClick={() => deleteCategory(elem)}>Löschen</button>
+                </p>
+            )}
         </div>
     )
 
