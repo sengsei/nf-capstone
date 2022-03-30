@@ -18,4 +18,8 @@ public class CategoryService {
     public void deleteCategory(String id) {
         categoryRepository.deleteById(id);
     }
+
+    public Category addCategory(Category category) {
+        return categoryRepository.save(category);
+    }
 }

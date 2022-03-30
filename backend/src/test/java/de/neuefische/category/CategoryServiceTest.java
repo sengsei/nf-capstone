@@ -44,4 +44,21 @@ class CategoryServiceTest {
         verify(repo).deleteById("777");
     }
 
+    @Test
+    void shouldAddCategory() {
+        Category elem = new Category();
+        elem.setCategoryName("Java");
+
+        Category savedElem = new Category();
+        savedElem.setCategoryName("Java");
+
+        CategoryRepository repo = Mockito.mock(CategoryRepository.class);
+        when(repo.save(elem)).thenReturn(savedElem);
+
+        CategoryService categoryService = new CategoryService(repo);
+        Category actual = categoryService.addCategory(elem);
+
+        assertThat(actual).isSameAs(savedElem);
+    }
+
 }

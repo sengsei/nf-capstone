@@ -5,6 +5,7 @@ import CategoryList from "./components/CategoryList";
 import QuestionListTrueFalse from "./components/QuestionListTrueFalse";
 import EditorMenue from "./components/EditorMenue";
 import TrueFalseEditor from "./components/TrueFalseEditor";
+import EditorCategories from "./components/EditorCategories";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path={'/questions/:categoryName'} element={<QuestionListTrueFalse/>}/>
                     <Route path={'/editormenue'} element={<EditorMenue/>}/>
                     <Route path={'/truefalseedit'} element={<TrueFalseEditor/>}/>
+                    <Route path={'/editorcategories'} element={<EditorCategories/>}/>
                 </Routes>
             </BrowserRouter>
         </div>

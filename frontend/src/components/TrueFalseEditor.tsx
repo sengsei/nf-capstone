@@ -11,10 +11,11 @@ export default function TrueFalseEditor() {
 
 
     useEffect(() => {
-        setTimeout(() => setAddErrorMessage(''), 10000)
         localStorage.setItem('question', question)
         localStorage.setItem('category', categoryName)
-    } , [question, categoryName, state]);
+        const timoutId = setTimeout(() => setAddErrorMessage(''), 10000)
+        return () => clearTimeout(timoutId)
+    } , [question, categoryName]);
 
     const addQuestion = () => {
         setCategoryName('')
