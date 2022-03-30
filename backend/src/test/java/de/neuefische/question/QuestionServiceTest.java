@@ -52,4 +52,21 @@ class QuestionServiceTest {
         assertThat(actual).isEqualTo(questionList);
     }
 
+    @Test
+    void shouldAddNewQuestion() {
+        Question elem = new Question();
+        elem.setQuestion("Java OOP?");
+
+        Question savedElem = new Question();
+        savedElem.setQuestion("Java OOP?");
+
+        QuestionRepository questionRepository = Mockito.mock(QuestionRepository.class);
+        when(questionRepository.save(elem)).thenReturn(savedElem);
+
+        QuestionService questionService = new QuestionService(questionRepository);
+        Question actual = questionService.addQuestion(elem);
+
+        assertThat(actual).isSameAs(savedElem);
+    }
+
 }
