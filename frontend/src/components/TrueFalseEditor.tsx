@@ -40,6 +40,7 @@ export default function TrueFalseEditor() {
                 throw Error('Eine Frage kann nicht hinzugefügt werden.')
             } )
             .then((data: Array<Question>) => data)
+            .then(fetchAllQuestions)
             .catch(e => setErrorMessage(e.message))
     }
 
@@ -63,6 +64,13 @@ export default function TrueFalseEditor() {
         fetchAllQuestions()
     }, [])
 
+    const deleteQuestion = (question: Question) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${question.id}`, {
+            method: 'DELETE'
+        })
+            .then(() => fetchAllQuestions())
+    }
+
     return(
         <div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
@@ -70,7 +78,8 @@ export default function TrueFalseEditor() {
             <input type={"text"} placeholder={"1 oder 0"} value={state} onChange={ev => setState(ev.target.value)}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
-                {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <p key={elem.id}>{elem.question}</p>)}
+                {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <p key={elem.id}>{elem.question}
+                <button onClick={() => deleteQuestion(elem)}>Löschen</button></p>)}
             </div>
         </div>
     )

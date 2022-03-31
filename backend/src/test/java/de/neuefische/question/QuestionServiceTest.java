@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class QuestionServiceTest {
@@ -67,6 +68,16 @@ class QuestionServiceTest {
         Question actual = questionService.addQuestion(elem);
 
         assertThat(actual).isSameAs(savedElem);
+    }
+
+    @Test
+    void shouldDeleteQuestionByID() {
+        QuestionRepository repo = Mockito.mock(QuestionRepository.class);
+        QuestionService questionService = new QuestionService(repo);
+
+        questionService.deleteQuestion("777");
+
+        verify(repo).deleteById("777");
     }
 
 }
