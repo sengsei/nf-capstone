@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
 
 class CategoryServiceTest {
 
@@ -59,6 +59,38 @@ class CategoryServiceTest {
         Category actual = categoryService.addCategory(elem);
 
         assertThat(actual).isSameAs(savedElem);
+    }
+
+    @Test
+    void shouldThrowAnExceptionWhenCategoryIsTheSame(){
+        Category elem = new Category();
+        elem.setCategoryName("Java");
+
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+        when(categoryRepository.findByCategoryName(elem.getCategoryName())).thenReturn(Optional.of(elem));
+
+        CategoryService categoryService = new CategoryService(categoryRepository);
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> categoryService.addCategory(elem))
+                .withMessage("Die Kategorie existiert schon!");
+
+    }
+
+
+    @Test
+    void shouldGetCategoryById() {
+        Category elem = new Category();
+        elem.setCategoryName("Java");
+        elem.setId("777");
+
+        CategoryRepository repo = Mockito.mock(CategoryRepository.class);
+        when(repo.findById(elem.getId())).thenReturn(Optional.of(elem));
+
+        CategoryService categoryService = new CategoryService(repo);
+        Category actual = categoryService.getCategoryById(elem.getId());
+
+        assertThat(actual).isEqualTo(elem);
     }
 
 }

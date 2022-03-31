@@ -1,15 +1,16 @@
 import {useEffect, useState} from "react";
-import {Category} from "../model";
+import {Category, Question} from "../model";
 
 
 export default function EditorCategories(){
     const[category, setCategory] = useState(localStorage.getItem('category') ?? '')
-    const[addErrorMessage, setAddErrorMessage] = useState('');
+    const[errorMessage, setErrorMessage] = useState('');
+    const[categories, setCategories] = useState([] as Array<Category>)
 
 
     useEffect(() => {
         localStorage.setItem('category', category)
-        const timoutId = setTimeout(() => setAddErrorMessage(''), 10000)
+        const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
     } , [category]);
 
@@ -31,13 +32,40 @@ export default function EditorCategories(){
                 throw Error('Eine Kategorie kann nicht hinzugefügt werden.')
             } )
             .then((data: Array<Category>) => data)
-            .catch(e => setAddErrorMessage(e.message))
+            .then(() => fetchAllCategories())
+            .catch(e => setErrorMessage(e.message))
     }
+
+    const fetchAllCategories = () => {
+
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
+            method: "GET"
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
+
+            })
+            .then((catFromBackend: Array<Question>) => setCategories(catFromBackend))
+            .catch((e: Error) => setErrorMessage(e.message))
+    }
+
+    useEffect(() => {
+        fetchAllCategories()
+    }, [])
 
     return(
         <div>
             <input type={"text"} placeholder={"Kategorie"} value={category} onChange={ev => setCategory(ev.target.value)}/>
-            {addErrorMessage ? <p>{addErrorMessage}</p> : <button onClick={addCategory}>Hinzufügen</button>}
+            {errorMessage ? <p>{errorMessage}</p> : <button id ="addBtn" onClick={addCategory}>Hinzufügen</button>}
+            <div>
+                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) => <p key={elem.id}>{elem.categoryName}
+                    {elem.categoryName === category ? <p>Die Kategorie {elem.categoryName} ist schon vorhanden, bitte ändern Sie die Bezeichnung.</p> : ''}
+                    </p>)}
+            </div>
         </div>
+
     )
 }
