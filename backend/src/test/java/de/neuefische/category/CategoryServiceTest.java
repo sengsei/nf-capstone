@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
 
 class CategoryServiceTest {
 
@@ -60,6 +60,23 @@ class CategoryServiceTest {
 
         assertThat(actual).isSameAs(savedElem);
     }
+
+    @Test
+    void shouldThrowAnExceptionWhenCategoryIsTheSame(){
+        Category elem = new Category();
+        elem.setCategoryName("Java");
+
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+        when(categoryRepository.findByCategoryName(elem.getCategoryName())).thenReturn(Optional.of(elem));
+
+        CategoryService categoryService = new CategoryService(categoryRepository);
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> categoryService.addCategory(elem))
+                .withMessage("Die Kategorie existiert schon!");
+
+    }
+
 
     @Test
     void shouldGetCategoryById() {

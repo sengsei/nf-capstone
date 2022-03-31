@@ -7,6 +7,7 @@ export default function EditorCategories(){
     const[errorMessage, setErrorMessage] = useState('');
     const[categories, setCategories] = useState([] as Array<Category>)
 
+
     useEffect(() => {
         localStorage.setItem('category', category)
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)

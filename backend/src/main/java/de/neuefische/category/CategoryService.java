@@ -24,7 +24,7 @@ public class CategoryService {
         if (categoryRepository.findByCategoryName(category.getCategoryName()).isEmpty()){
             return categoryRepository.save(category);
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Die Kategorie existiert schon!");
     }
 
     public Category getCategoryById(String id) {
