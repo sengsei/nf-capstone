@@ -61,4 +61,19 @@ class CategoryServiceTest {
         assertThat(actual).isSameAs(savedElem);
     }
 
+    @Test
+    void shouldGetCategoryById() {
+        Category elem = new Category();
+        elem.setCategoryName("Java");
+        elem.setId("777");
+
+        CategoryRepository repo = Mockito.mock(CategoryRepository.class);
+        when(repo.findById(elem.getId())).thenReturn(Optional.of(elem));
+
+        CategoryService categoryService = new CategoryService(repo);
+        Category actual = categoryService.getCategoryById(elem.getId());
+
+        assertThat(actual).isEqualTo(elem);
+    }
+
 }
