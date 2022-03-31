@@ -24,4 +24,8 @@ public class QuestionService {
     public Question addQuestion(Question question) {
         return questionRepository.save(question);
     }
+
+    public void deleteQuestion(String id) {
+        questionRepository.deleteById(id);
+    }
 }
