@@ -2,17 +2,18 @@ import {useEffect, useState} from "react";
 import {Category, Question} from "../model";
 
 
-export default function EditorCategories(){
-    const[category, setCategory] = useState(localStorage.getItem('category') ?? '')
-    const[errorMessage, setErrorMessage] = useState('');
-    const[categories, setCategories] = useState([] as Array<Category>)
+export default function EditorCategories() {
+    const [category, setCategory] = useState(localStorage.getItem('category') ?? '')
+    const [errorMessage, setErrorMessage] = useState('');
+    const [categories, setCategories] = useState([] as Array<Category>)
+    const [editMode, setEditMode] = useState(-1)
 
 
     useEffect(() => {
         localStorage.setItem('category', category)
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
-    } , [category]);
+    }, [category]);
 
     const addCategory = () => {
         setCategory('')
@@ -26,18 +27,19 @@ export default function EditorCategories(){
             })
         })
             .then(response => {
-                if (response.ok){
+                if (response.ok) {
                     return response.json()
                 }
                 throw Error('Eine Kategorie kann nicht hinzugefügt werden.')
-            } )
-            .then((data: Array<Category>) => data)
+            })
+            .then((data: Array<Category>) => data
+            )
             .then(() => fetchAllCategories())
             .catch(e => setErrorMessage(e.message))
     }
 
     const fetchAllCategories = () => {
-
+        setCategory('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
             method: "GET"
         })
@@ -52,20 +54,54 @@ export default function EditorCategories(){
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
+    const changeCategory = (id: string) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                categoryName: category
+            })
+        })
+            .then(response => response.json())
+            .then((catFromBacked: Array<Category>) => setCategories(catFromBacked))
+            .then(() => setEditMode(-1))
+    }
+
+
     useEffect(() => {
         fetchAllCategories()
     }, [])
 
-    return(
+    const existing = () => {
+        return categories.filter(e => e.categoryName === category).length > 0
+    }
+
+    return (
         <div>
-            <input type={"text"} placeholder={"Kategorie"} value={category} onChange={ev => setCategory(ev.target.value)}/>
-            {errorMessage ? <p>{errorMessage}</p> : <button id ="addBtn" onClick={addCategory}>Hinzufügen</button>}
+            <input type={"text"} placeholder={"Kategorie"} value={category}
+                   onChange={ev => setCategory(ev.target.value)}/>
+            {errorMessage ? <p>{errorMessage}</p> :
+                <button id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
             <div>
-                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) => <p key={elem.id}>{elem.categoryName}
-                    {elem.categoryName === category ? <p>Die Kategorie {elem.categoryName} ist schon vorhanden, bitte ändern Sie die Bezeichnung.</p> : ''}
-                    </p>)}
+
+                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><p
+                    onClick={() => setEditMode(index)}>{elem.categoryName}</p>
+                    {
+                        editMode === index
+                        &&
+                        <div><input type={"text"} value={category} onChange={ev => setCategory(ev.target.value)}/>
+
+                            <button onClick={() => changeCategory(elem.id)}>Ändern</button>
+                        </div>
+                    }
+                </div>)}
+
             </div>
         </div>
+
 
     )
 }

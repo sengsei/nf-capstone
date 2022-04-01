@@ -35,4 +35,10 @@ public class CategoryController {
         return categoryService.getCategoryList();
     }
 
+    @PutMapping("/{id}")
+    public Collection<Category>changeCategory(@PathVariable String id, @RequestBody Category category){
+        categoryService.changeCategory(id, category);
+        return categoryService.getCategoryList();
+    }
+
 }

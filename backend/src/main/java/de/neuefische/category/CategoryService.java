@@ -31,4 +31,13 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         return category.orElseGet(Category::new);
     }
+
+    public void changeCategory(String id, Category changedCategory) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if (category.isPresent()){
+            Category catUnwrapped = category.get();
+            catUnwrapped.setCategoryName(changedCategory.getCategoryName());
+            categoryRepository.save(catUnwrapped);
+        }
+    }
 }

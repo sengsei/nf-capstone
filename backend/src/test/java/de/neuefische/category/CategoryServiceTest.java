@@ -3,7 +3,6 @@ package de.neuefische.category;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void shouldDeleteCategory(){
+    void shouldDeleteCategory() {
         CategoryRepository repo = Mockito.mock(CategoryRepository.class);
         CategoryService categoryService = new CategoryService(repo);
 
@@ -62,7 +61,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void shouldThrowAnExceptionWhenCategoryIsTheSame(){
+    void shouldThrowAnExceptionWhenCategoryIsTheSame() {
         Category elem = new Category();
         elem.setCategoryName("Java");
 
@@ -74,6 +73,27 @@ class CategoryServiceTest {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> categoryService.addCategory(elem))
                 .withMessage("Die Kategorie existiert schon!");
+    }
+
+    @Test
+    void shouldChangeCategory() {
+        Category elem = new Category();
+        elem.setId("777");
+        elem.setCategoryName("Java");
+
+        Category savedElem = new Category();
+        savedElem.setId("777");
+        savedElem.setCategoryName("Python");
+
+
+        CategoryRepository repo = Mockito.mock(CategoryRepository.class);
+        when(repo.findById("777")).thenReturn(Optional.of(elem));
+
+        CategoryService categoryService = new CategoryService(repo);
+
+        categoryService.changeCategory("777", savedElem);
+
+        Mockito.verify(repo).save(savedElem);
 
     }
 
