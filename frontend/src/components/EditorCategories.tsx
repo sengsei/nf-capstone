@@ -7,6 +7,8 @@ export default function EditorCategories(){
     const[errorMessage, setErrorMessage] = useState('');
     const[categories, setCategories] = useState([] as Array<Category>)
 
+    const disableButton = () => {(document.getElementById('addBtn') as HTMLInputElement).disabled = true}
+    const enableButton = () => {(document.getElementById('addBtn') as HTMLInputElement).disabled = false}
 
     useEffect(() => {
         localStorage.setItem('category', category)
@@ -37,7 +39,6 @@ export default function EditorCategories(){
     }
 
     const fetchAllCategories = () => {
-
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
             method: "GET"
         })
@@ -53,6 +54,7 @@ export default function EditorCategories(){
     }
 
     useEffect(() => {
+        enableButton()
         fetchAllCategories()
     }, [])
 
@@ -62,7 +64,7 @@ export default function EditorCategories(){
             {errorMessage ? <p>{errorMessage}</p> : <button id ="addBtn" onClick={addCategory}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) => <p key={elem.id}>{elem.categoryName}
-                    {elem.categoryName === category ? <p>Die Kategorie {elem.categoryName} ist schon vorhanden, bitte ändern Sie die Bezeichnung.</p> : ''}
+                    {elem.categoryName === category ? <p>Die Kategorie {elem.categoryName} ist schon vorhanden, bitte ändern Sie die Bezeichnung.</p> && disableButton() : ''}
                     </p>)}
             </div>
         </div>
