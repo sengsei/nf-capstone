@@ -70,6 +70,13 @@ export default function EditorCategories() {
             .then(() => setEditMode(-1))
     }
 
+    const deleteCategory = (id: string) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${id}`, {
+            method: 'DELETE'
+        })
+            .then(() => fetchAllCategories())
+    }
+
 
     useEffect(() => {
         fetchAllCategories()
@@ -89,6 +96,8 @@ export default function EditorCategories() {
 
                 {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><p
                     onClick={() => setEditMode(index)}>{elem.categoryName}</p>
+                    <button onClick={() => deleteCategory(elem.id)}>Delete</button>
+
                     {
                         editMode === index
                         &&
