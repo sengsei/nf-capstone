@@ -8,7 +8,6 @@ export default function QuestionListTrueFalse() {
     const [errorMessage, setErrorMessage] = useState('')
     const params = useParams()
 
-
     const fetchAllQuestions = () => {
 
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
@@ -24,8 +23,6 @@ export default function QuestionListTrueFalse() {
             .then((questionsFromBackend: Array<Question>) => setQuestions(questionsFromBackend))
             .catch((e: Error) => setErrorMessage(e.message))
     }
-
-
 
     const getQuestionByCategory = (categoryName : string) => {
         return fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${categoryName}`,{
@@ -54,9 +51,26 @@ export default function QuestionListTrueFalse() {
         }, [errorMessage]
     )
 
+    const checkWrongAnswer = (elem: Question) => {
+        const elemById = document.getElementById(elem.id)!;
+        elem.questionState === 'false' ? elemById.setAttribute("style",'background-color:green')
+            : elemById.setAttribute("style",'background-color:red')
+    }
+
+    const checkRightAnswer = (elem: Question) => {
+        const elemById = document.getElementById(elem.id)!;
+        elem.questionState === 'true' ? elemById.setAttribute("style",'background-color:green')
+            : elemById.setAttribute("style",'background-color:red')
+    }
+
     return (
         <div>
-            {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <p key={elem.id}>{elem.question}</p>)}
+            {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <div  id={elem.id} key={elem.id}> {elem.question} <div>
+                <button onClick={ () => checkRightAnswer(elem) }>W</button>
+                <button onClick={ () => checkWrongAnswer(elem) }>F</button>
+            </div></div>)}
+
+
         </div>
     )
 }
