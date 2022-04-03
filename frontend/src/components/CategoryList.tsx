@@ -40,6 +40,10 @@ export default function CategoryList() {
       navigate(`/questions/${categoryName}`)
     }
 
+    const routeToPath = (where: string) => {
+        navigate("/"+where)
+    }
+
     const deleteCategory = (category:Category) => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${category.id}`, {
             method: 'DELETE'
@@ -56,6 +60,9 @@ export default function CategoryList() {
                     <button onClick={() => deleteCategory(elem)}>Löschen</button>
                 </p>
             )}
+        <div>
+            <button onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Wahr/Falsch</button>
+        </div>
         </div>
     )
 

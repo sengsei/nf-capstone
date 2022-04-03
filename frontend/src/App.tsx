@@ -6,6 +6,7 @@ import QuestionListTrueFalse from "./components/QuestionListTrueFalse";
 import EditorMenue from "./components/EditorMenue";
 import TrueFalseEditor from "./components/TrueFalseEditor";
 import EditorCategories from "./components/EditorCategories";
+import TriviaTrueFalse from "./components/TriviaTrueFalse";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                     <Route path={'/editormenue'} element={<EditorMenue/>}/>
                     <Route path={'/truefalseedit'} element={<TrueFalseEditor/>}/>
                     <Route path={'/editorcategories'} element={<EditorCategories/>}/>
+                    <Route path={'/questions/trivia-tf'} element={<TriviaTrueFalse/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
