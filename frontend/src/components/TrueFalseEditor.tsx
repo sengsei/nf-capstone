@@ -1,5 +1,6 @@
 import {Question} from "../model";
 import {useEffect, useState} from "react";
+import axios from "axios";
 
 
 
@@ -71,8 +72,36 @@ export default function TrueFalseEditor() {
             .then(() => fetchAllQuestions())
     }
 
+    const importCsv = (file: File | null) => {
+        const fileData = new FormData();
+        fileData.append('csv', file!);
+
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/questions`, fileData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: progressEvent => {
+                console.log("Uploading : " + ((progressEvent.loaded / progressEvent.total) * 100).toString() + "%")
+            }
+
+        }).catch(error => {
+            if (error.response.status === 422) {
+                setErrorMessage('Nicht alle Einträge konnten importiert werden!');
+            } else if (error.response.status === 400) {
+                setErrorMessage('Die Einträge wurde nicht importiert. Guck ins Log!!!');
+            }
+        })
+            .then(() => fetchAllQuestions())
+
+
+
+    };
+
     return(
         <div>
+            <div>
+                <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
+            </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
             <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
             <input type={"text"} placeholder={"1 oder 0"} value={state} onChange={ev => setState(ev.target.value)}/>

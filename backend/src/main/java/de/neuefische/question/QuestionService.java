@@ -1,9 +1,12 @@
 package de.neuefische.question;
 
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,5 +30,23 @@ public class QuestionService {
 
     public void deleteQuestion(String id) {
         questionRepository.deleteById(id);
+    }
+
+    public ImportStatus createQuestions(InputStream inputStream) {
+        try (Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            CsvToBean<CsvItem> csvToBean = new CsvToBeanBuilder<CsvItem>(reader)
+                    .withType(CsvItem.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            questionRepository.saveAll(csvToBean.parse().stream()
+                    .map(item -> item.toQuestion())
+                    .toList());
+
+            return ImportStatus.SUCCESS;
+        } catch (IllegalStateException | IllegalArgumentException | IOException e) {
+            return ImportStatus.FAILURE;
+        }
+
     }
 }
