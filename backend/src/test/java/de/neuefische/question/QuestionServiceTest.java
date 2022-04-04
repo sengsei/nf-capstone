@@ -1,17 +1,13 @@
 package de.neuefische.question;
 
-import de.neuefische.category.Category;
-import de.neuefische.category.CategoryRepository;
-import de.neuefische.category.CategoryService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class QuestionServiceTest {
 
@@ -26,7 +22,7 @@ class QuestionServiceTest {
         elem2.setQuestion("Ist Python eine interpretierte Sprache?");
 
         List<Question> questionList = List.of(elem1, elem2);
-        QuestionRepository repo = Mockito.mock(QuestionRepository.class);
+        QuestionRepository repo = mock(QuestionRepository.class);
 
         when(repo.findAll()).thenReturn(questionList);
 
@@ -43,7 +39,7 @@ class QuestionServiceTest {
         elem.setCategoryName("Java");
 
         List<Question> questionList = List.of(elem);
-        QuestionRepository repo = Mockito.mock(QuestionRepository.class);
+        QuestionRepository repo = mock(QuestionRepository.class);
 
         when(repo.findQuestionByCategoryName("Java")).thenReturn(questionList);
 
@@ -61,7 +57,7 @@ class QuestionServiceTest {
         Question savedElem = new Question();
         savedElem.setQuestion("Java OOP?");
 
-        QuestionRepository questionRepository = Mockito.mock(QuestionRepository.class);
+        QuestionRepository questionRepository = mock(QuestionRepository.class);
         when(questionRepository.save(elem)).thenReturn(savedElem);
 
         QuestionService questionService = new QuestionService(questionRepository);
@@ -72,12 +68,25 @@ class QuestionServiceTest {
 
     @Test
     void shouldDeleteQuestionByID() {
-        QuestionRepository repo = Mockito.mock(QuestionRepository.class);
+        QuestionRepository repo = mock(QuestionRepository.class);
         QuestionService questionService = new QuestionService(repo);
 
         questionService.deleteQuestion("777");
 
         verify(repo).deleteById("777");
     }
+    @Test
+    void shouldImportCsv() {
+        InputStream input = getClass().getResourceAsStream("/de.neuefische/question/data.csv");
+        QuestionRepository questionRepository = mock(QuestionRepository.class);
+        QuestionService questionService = new QuestionService(questionRepository);
+
+        questionService.createQuestions(input);
+
+        verify(questionRepository).saveAll(List.of(
+                new Question(null, "Java", "Java", "true")));
+
+    }
+
 
 }

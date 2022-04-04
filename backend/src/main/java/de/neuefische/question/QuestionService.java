@@ -40,7 +40,7 @@ public class QuestionService {
                     .build();
 
             questionRepository.saveAll(csvToBean.parse().stream()
-                    .map(item -> item.toQuestion())
+                    .map(CsvItem::toQuestion)
                     .toList());
 
             return ImportStatus.SUCCESS;
