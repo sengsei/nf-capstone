@@ -1,10 +1,12 @@
 package de.neuefische.question;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -86,6 +88,30 @@ class QuestionServiceTest {
         verify(questionRepository).saveAll(List.of(
                 new Question(null, "Java", "Kann Java das OOP Konzept?", "true"),
                 new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true")));
+    }
+
+    @Test
+    void shouldChangeQuestion() {
+        Question elem = new Question();
+        elem.setId("777");
+        elem.setCategoryName("Java");
+        elem.setQuestion("Java kann das OOP Konzept.");
+        elem.setQuestionState("true");
+
+        Question savedQuestion = new Question();
+        savedQuestion.setId("777");
+        savedQuestion.setCategoryName("Java");
+        savedQuestion.setQuestion("Java kann FP Konzepte.");
+        savedQuestion.setQuestionState("true");
+
+        QuestionRepository repository = mock(QuestionRepository.class);
+        when(repository.findById("777")).thenReturn(Optional.of(elem));
+
+        QuestionService questionService = new QuestionService(repository);
+
+        questionService.changeQuestion("777", savedQuestion);
+
+        verify(repository).save(savedQuestion);
     }
 
 

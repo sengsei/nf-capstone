@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -48,5 +49,16 @@ public class QuestionService {
             return ImportStatus.FAILURE;
         }
 
+    }
+
+    public void changeQuestion(String id, Question changedQuestion) {
+        Optional<Question> question = questionRepository.findById(id);
+        if (question.isPresent()){
+            Question questionUnwrapped = question.get();
+            questionUnwrapped.setQuestion(changedQuestion.getQuestion());
+            questionUnwrapped.setCategoryName(changedQuestion.getCategoryName());
+            questionUnwrapped.setQuestionState(changedQuestion.getQuestionState());
+            questionRepository.save(questionUnwrapped);
+        }
     }
 }

@@ -108,7 +108,8 @@ export default function TrueFalseEditor() {
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <p key={elem.id}>{elem.question}
-                <button onClick={() => deleteQuestion(elem)}>Löschen</button></p>)}
+                <button onClick={() => deleteQuestion(elem)}>Löschen</button>
+                </p>)}
             </div>
         </div>
     )
