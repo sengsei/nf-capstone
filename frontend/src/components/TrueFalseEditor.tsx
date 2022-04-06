@@ -10,6 +10,8 @@ export default function TrueFalseEditor() {
     const[state, setState] = useState( '')
     const[errorMessage, setErrorMessage] = useState('')
     const[questions, setQuestions] = useState([] as Array<Question>)
+    const[questionState, setQuestionState] = useState('')
+    const [editMode, setEditMode] = useState(-1)
 
 
     useEffect(() => {
@@ -46,7 +48,9 @@ export default function TrueFalseEditor() {
     }
 
     const fetchAllQuestions = () => {
-
+        setQuestionState('')
+        setQuestion('')
+        setCategoryName('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
             method: "GET"
         })
@@ -92,10 +96,28 @@ export default function TrueFalseEditor() {
             }
         })
             .then(() => fetchAllQuestions())
-
-
-
     };
+
+    const changeQuestion = (id: string) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                categoryName: categoryName,
+                question: question,
+                questionState: questionState
+            })
+        })
+            .then(response => response.json())
+            .then((qFromBackend: Array<Question>) => setQuestions(qFromBackend))
+            .then(() => setEditMode(-1))
+            .then(() => setQuestion(''))
+            .then(() => setQuestionState(''))
+            .then(() => setCategoryName(''))
+    }
 
     return(
         <div>
@@ -104,11 +126,28 @@ export default function TrueFalseEditor() {
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
             <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
-            <input type={"text"} placeholder={"1 oder 0"} value={state} onChange={ev => setState(ev.target.value)}/>
+            <input type={"text"} placeholder={"true oder false"} value={state} onChange={ev => setState(ev.target.value)}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
-                {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <p key={elem.id}>{elem.question}
-                <button onClick={() => deleteQuestion(elem)}>Löschen</button></p>)}
+                {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
+                 <div onClick={() => setEditMode(index)}>{elem.question}</div>
+                <button onClick={() => deleteQuestion(elem)}>Löschen</button>
+
+                    {
+                        editMode === index
+                        &&
+                        <div>
+                            <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
+                            <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
+                            <input type={"text"} placeholder={"true oder false"} value={questionState} onChange={ev=>setQuestionState(ev.target.value)}/>
+                            <button onClick={() => changeQuestion(elem.id)}>Ändern</button>
+                        </div>
+                    }
+                </div>)}
+
+
+
+
             </div>
         </div>
     )

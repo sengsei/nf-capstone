@@ -1,5 +1,6 @@
 package de.neuefische.question;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +46,12 @@ public class QuestionController {
             return ResponseEntity.unprocessableEntity().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/{id}")
+    public Collection<Question>changeQuestion(@PathVariable String id, @RequestBody Question question){
+        questionService.changeQuestion(id, question);
+        return questionService.getQuestionList();
     }
 
     @DeleteMapping("/{id}")

@@ -36,7 +36,9 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()){
             Category catUnwrapped = category.get();
-            catUnwrapped.setCategoryName(changedCategory.getCategoryName());
+            if (!changedCategory.getCategoryName().isBlank()){
+                catUnwrapped.setCategoryName(changedCategory.getCategoryName());
+            }
             categoryRepository.save(catUnwrapped);
         }
     }
