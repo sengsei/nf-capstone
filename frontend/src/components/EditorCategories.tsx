@@ -68,6 +68,7 @@ export default function EditorCategories() {
             .then(response => response.json())
             .then((catFromBacked: Array<Category>) => setCategories(catFromBacked))
             .then(() => setEditMode(-1))
+            .then(() => setCategory(''))
     }
 
     const deleteCategory = (id: string) => {
@@ -94,15 +95,15 @@ export default function EditorCategories() {
                 <button id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
             <div>
 
-                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><p
-                    onClick={() => setEditMode(index)}>{elem.categoryName}</p>
-                    <button onClick={() => deleteCategory(elem.id)}>Delete</button>
+                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><div
+                    onClick={() => setEditMode(index)}>{elem.categoryName}</div>
+                    <button onClick={() => deleteCategory(elem.id)}>Löschen</button>
 
                     {
                         editMode === index
                         &&
-                        <div><input type={"text"} value={category} onChange={ev => setCategory(ev.target.value)}/>
-
+                        <div>
+                            <input type={"text"} value={category} placeholder={"Kategorie"} onChange={ev => setCategory(ev.target.value)}/>
                             <button onClick={() => changeCategory(elem.id)}>Ändern</button>
                         </div>
                     }
