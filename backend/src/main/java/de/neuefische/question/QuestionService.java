@@ -55,9 +55,15 @@ public class QuestionService {
         Optional<Question> question = questionRepository.findById(id);
         if (question.isPresent()){
             Question questionUnwrapped = question.get();
-            questionUnwrapped.setQuestion(changedQuestion.getQuestion());
-            questionUnwrapped.setCategoryName(changedQuestion.getCategoryName());
-            questionUnwrapped.setQuestionState(changedQuestion.getQuestionState());
+            if (!changedQuestion.getQuestion().isBlank()){
+                questionUnwrapped.setQuestion(changedQuestion.getQuestion());
+            }
+            if (!changedQuestion.getCategoryName().isBlank()){
+                questionUnwrapped.setCategoryName(changedQuestion.getCategoryName());
+            }
+            if (!changedQuestion.getQuestionState().isBlank()){
+                questionUnwrapped.setQuestionState(changedQuestion.getQuestionState());
+            }
             questionRepository.save(questionUnwrapped);
         }
     }
