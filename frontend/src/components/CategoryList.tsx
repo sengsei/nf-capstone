@@ -10,9 +10,12 @@ export default function CategoryList() {
     const navigate = useNavigate()
 
     const fetchAllCategories = () => {
-
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(response =>
             {
@@ -45,8 +48,12 @@ export default function CategoryList() {
     }
 
     const deleteCategory = (category:Category) => {
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${category.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(() => fetchAllCategories())
 
