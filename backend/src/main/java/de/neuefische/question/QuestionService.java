@@ -2,11 +2,13 @@ package de.neuefische.question;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import de.neuefische.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import java.io.*;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +18,10 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
 
-    public Collection<Question>getQuestionList() {
-        return questionRepository.findAll();
+    public Collection<Question>getQuestionList(Principal principal) {
+        return questionRepository.findAllByUserId(getUserID(principal));
     }
 
     public List<Question> findByCategory(String categoryName) {
@@ -33,7 +36,7 @@ public class QuestionService {
         questionRepository.deleteById(id);
     }
 
-    public ImportStatus createQuestions(InputStream inputStream) {
+    public ImportStatus createQuestions(InputStream inputStream, String userId) {
         try (Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             CsvToBean<CsvItem> csvToBean = new CsvToBeanBuilder<CsvItem>(reader)
                     .withType(CsvItem.class)
@@ -41,7 +44,7 @@ public class QuestionService {
                     .build();
 
             questionRepository.saveAll(csvToBean.parse().stream()
-                    .map(CsvItem::toQuestion)
+                    .map(elem -> elem.toQuestion(userId))
                     .toList());
 
             return ImportStatus.SUCCESS;
@@ -66,5 +69,9 @@ public class QuestionService {
             }
             questionRepository.save(questionUnwrapped);
         }
+    }
+
+    private String getUserID(Principal principal) {
+        return userRepository.findByEmail(principal.getName()).get().getId();
     }
 }

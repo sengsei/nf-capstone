@@ -9,8 +9,8 @@ public class CsvItem {
     @CsvBindByName
     private String questionState;
 
-    public Question toQuestion(){
-        return new Question(null, categoryName, question, questionState);
+    public Question toQuestion(String userId){
+        return new Question(null, categoryName, question, questionState, userId);
     }
 
 }

@@ -17,4 +17,5 @@ public class Question {
     private String categoryName;
     private String question;
     private String questionState;
+    private String userId;
 }

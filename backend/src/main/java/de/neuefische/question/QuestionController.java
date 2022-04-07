@@ -1,6 +1,8 @@
 package de.neuefische.question;
 
 
+import de.neuefische.user.UserDocument;
+import de.neuefische.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,10 +22,11 @@ import java.util.List;
 @CrossOrigin
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping
-    public Collection<Question> getQuestionList(){
-        return questionService.getQuestionList();
+    public Collection<Question> getQuestionList(Principal principal){
+        return questionService.getQuestionList(principal);
     }
 
     @GetMapping("/{category}")
@@ -32,14 +36,17 @@ public class QuestionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Collection<Question> addQuestion(@RequestBody Question question) {
+    public Collection<Question> addQuestion(@RequestBody Question question, Principal principal) {
         questionService.addQuestion(question);
-        return questionService.getQuestionList();
+        return questionService.getQuestionList(principal);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> createQuestions(@RequestParam("csv")MultipartFile file) throws IOException {
-        ImportStatus importStatus = questionService.createQuestions(file.getInputStream());
+    public ResponseEntity<Void> createQuestions(@RequestParam("csv")MultipartFile file, Principal principal) throws IOException {
+
+        UserDocument user = userService.findByEmail(principal.getName()).orElseThrow();
+
+        ImportStatus importStatus = questionService.createQuestions(file.getInputStream(), user.getId());
         if (importStatus == ImportStatus.SUCCESS) {
             return ResponseEntity.ok().build();
         } else if (importStatus == ImportStatus.PARTIAL) {
@@ -49,9 +56,9 @@ public class QuestionController {
     }
 
     @PutMapping("/{id}")
-    public Collection<Question>changeQuestion(@PathVariable String id, @RequestBody Question question){
+    public Collection<Question>changeQuestion(@PathVariable String id, @RequestBody Question question, Principal principal){
         questionService.changeQuestion(id, question);
-        return questionService.getQuestionList();
+        return questionService.getQuestionList(principal);
     }
 
     @DeleteMapping("/{id}")

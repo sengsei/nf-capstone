@@ -1,9 +1,12 @@
 package de.neuefische.question;
 
+import de.neuefische.user.UserDocument;
+import de.neuefische.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -23,15 +26,19 @@ class QuestionServiceTest {
         elem2.setCategoryName("Python");
         elem2.setQuestion("Ist Python eine interpretierte Sprache?");
 
-        List<Question> questionList = List.of(elem1, elem2);
-        QuestionRepository repo = mock(QuestionRepository.class);
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
 
-        when(repo.findAll()).thenReturn(questionList);
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
 
-        QuestionService questionService = new QuestionService(repo);
-        Collection<Question> actual = questionService.getQuestionList();
+        QuestionRepository questionRepository = mock(QuestionRepository.class);
+        when(questionRepository.findAllByUserId("123")).thenReturn(List.of(elem1, elem2));
 
-        assertThat(actual).isEqualTo(questionList);
+        QuestionService questionService = new QuestionService(questionRepository, userRepository);
+        Collection<Question> actual = questionService.getQuestionList(principal);
+
+        assertThat(actual.size()).isEqualTo(2);
     }
 
     @Test
@@ -40,12 +47,18 @@ class QuestionServiceTest {
         elem.setQuestion("Java OOP?");
         elem.setCategoryName("Java");
 
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
+
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
+
         List<Question> questionList = List.of(elem);
         QuestionRepository repo = mock(QuestionRepository.class);
 
         when(repo.findQuestionByCategoryName("Java")).thenReturn(questionList);
 
-        QuestionService questionService = new QuestionService(repo);
+        QuestionService questionService = new QuestionService(repo, userRepository);
         List<Question> actual = questionService.findByCategory("Java");
 
         assertThat(actual).isEqualTo(questionList);
@@ -59,10 +72,16 @@ class QuestionServiceTest {
         Question savedElem = new Question();
         savedElem.setQuestion("Java OOP?");
 
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
+
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
+
         QuestionRepository questionRepository = mock(QuestionRepository.class);
         when(questionRepository.save(elem)).thenReturn(savedElem);
 
-        QuestionService questionService = new QuestionService(questionRepository);
+        QuestionService questionService = new QuestionService(questionRepository, userRepository);
         Question actual = questionService.addQuestion(elem);
 
         assertThat(actual).isSameAs(savedElem);
@@ -70,8 +89,14 @@ class QuestionServiceTest {
 
     @Test
     void shouldDeleteQuestionByID() {
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
+
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
+
         QuestionRepository repo = mock(QuestionRepository.class);
-        QuestionService questionService = new QuestionService(repo);
+        QuestionService questionService = new QuestionService(repo, userRepository);
 
         questionService.deleteQuestion("777");
 
@@ -79,15 +104,21 @@ class QuestionServiceTest {
     }
     @Test
     void shouldImportCsv() {
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
+
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
+
         InputStream input = getClass().getResourceAsStream("/de.neuefische/question/data.csv");
         QuestionRepository questionRepository = mock(QuestionRepository.class);
-        QuestionService questionService = new QuestionService(questionRepository);
+        QuestionService questionService = new QuestionService(questionRepository, userRepository);
 
-        questionService.createQuestions(input);
+        questionService.createQuestions(input, user.getId());
 
         verify(questionRepository).saveAll(List.of(
-                new Question(null, "Java", "Kann Java das OOP Konzept?", "true"),
-                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true")));
+                new Question(null, "Java", "Kann Java das OOP Konzept?", "true", "userId"),
+                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true", "userId")));
     }
 
     @Test
@@ -104,10 +135,16 @@ class QuestionServiceTest {
         savedQuestion.setQuestion("Java kann FP Konzepte.");
         savedQuestion.setQuestionState("true");
 
+        UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
+        Principal principal = () -> "user@mail.de";
+
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
+
         QuestionRepository repository = mock(QuestionRepository.class);
         when(repository.findById("777")).thenReturn(Optional.of(elem));
 
-        QuestionService questionService = new QuestionService(repository);
+        QuestionService questionService = new QuestionService(repository, userRepository);
 
         questionService.changeQuestion("777", savedQuestion);
 
