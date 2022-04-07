@@ -22,6 +22,7 @@ export default function TrueFalseEditor() {
     } , [question, categoryName]);
 
     const addQuestion = () => {
+        const token = localStorage.getItem("token")
         setCategoryName('')
         setQuestion('')
         setState('')
@@ -29,6 +30,7 @@ export default function TrueFalseEditor() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 categoryName: categoryName,
@@ -48,11 +50,15 @@ export default function TrueFalseEditor() {
     }
 
     const fetchAllQuestions = () => {
+        const token = localStorage.getItem("token")
         setQuestionState('')
         setQuestion('')
         setCategoryName('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(response => {
                 if (response.ok) {
@@ -70,8 +76,12 @@ export default function TrueFalseEditor() {
     }, [])
 
     const deleteQuestion = (question: Question) => {
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${question.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(() => fetchAllQuestions())
     }
@@ -79,10 +89,12 @@ export default function TrueFalseEditor() {
     const importCsv = (file: File | null) => {
         const fileData = new FormData();
         fileData.append('csv', file!);
+        const token = localStorage.getItem("token")
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/questions`, fileData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                "Authorization": "Bearer " + token
             },
             onUploadProgress: progressEvent => {
                 console.log("Uploading : " + ((progressEvent.loaded / progressEvent.total) * 100).toString() + "%")
@@ -99,10 +111,12 @@ export default function TrueFalseEditor() {
     };
 
     const changeQuestion = (id: string) => {
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 id: id,
