@@ -30,6 +30,7 @@ export default function QuestionListTrueFalse() {
     const getQuestionByCategory = (categoryName : string) => {
         const token = localStorage.getItem("token")
         return fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${categoryName}`,{
+            method: "GET",
             headers: {
                 "Authorization": "Bearer " + token
             }
