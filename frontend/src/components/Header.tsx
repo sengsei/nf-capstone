@@ -11,7 +11,7 @@ export default function Header() {
     return(
         <div>
             <div>Titel</div>
-            <button>Login</button>
+            <button onClick={() => routeToPath('login')}>Login</button>
             <button>Logout</button>
             <button onClick={() => routeToPath('categories')}>Home</button>
             <button>Konto</button>

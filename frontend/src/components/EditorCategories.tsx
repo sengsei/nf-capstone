@@ -16,11 +16,13 @@ export default function EditorCategories() {
     }, [category]);
 
     const addCategory = () => {
+        const token = localStorage.getItem("token")
         setCategory('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 categoryName: category
@@ -39,9 +41,13 @@ export default function EditorCategories() {
     }
 
     const fetchAllCategories = () => {
+        const token = localStorage.getItem("token")
         setCategory('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(response => {
                 if (response.ok) {
@@ -55,10 +61,12 @@ export default function EditorCategories() {
     }
 
     const changeCategory = (id: string) => {
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 id: id,
@@ -72,8 +80,12 @@ export default function EditorCategories() {
     }
 
     const deleteCategory = (id: string) => {
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(() => fetchAllCategories())
     }
