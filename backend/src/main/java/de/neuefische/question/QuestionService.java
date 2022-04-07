@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import de.neuefische.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 
@@ -32,11 +33,11 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
-    public void deleteQuestion(String id) {
-        questionRepository.deleteById(id);
+    public void deleteQuestion(String id, Principal principal) {
+        questionRepository.deleteQuestionByIdAndUserId(id, getUserID(principal));
     }
 
-    public ImportStatus createQuestions(InputStream inputStream, String userId) {
+    public ImportStatus createQuestions(InputStream inputStream, Principal principal) {
         try (Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             CsvToBean<CsvItem> csvToBean = new CsvToBeanBuilder<CsvItem>(reader)
                     .withType(CsvItem.class)
@@ -44,7 +45,7 @@ public class QuestionService {
                     .build();
 
             questionRepository.saveAll(csvToBean.parse().stream()
-                    .map(elem -> elem.toQuestion(userId))
+                    .map(elem -> elem.toQuestion(getUserID(principal)))
                     .toList());
 
             return ImportStatus.SUCCESS;

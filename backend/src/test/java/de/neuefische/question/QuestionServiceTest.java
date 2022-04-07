@@ -87,6 +87,9 @@ class QuestionServiceTest {
 
     @Test
     void shouldDeleteQuestionByID() {
+        Question elem = new Question();
+        elem.setId("777");
+
         UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
         Principal principal = () -> "user@mail.de";
 
@@ -96,9 +99,9 @@ class QuestionServiceTest {
         QuestionRepository repo = mock(QuestionRepository.class);
         QuestionService questionService = new QuestionService(repo, userRepository);
 
-        questionService.deleteQuestion("777");
+        questionService.deleteQuestion(elem.getId(), principal);
 
-        verify(repo).deleteById("777");
+        verify(repo).deleteQuestionByIdAndUserId("777", "123");
     }
     @Test
     void shouldImportCsv() {
@@ -112,11 +115,11 @@ class QuestionServiceTest {
         QuestionRepository questionRepository = mock(QuestionRepository.class);
         QuestionService questionService = new QuestionService(questionRepository, userRepository);
 
-        questionService.createQuestions(input, user.getId());
+        questionService.createQuestions(input, principal);
 
         verify(questionRepository).saveAll(List.of(
-                new Question(null, "Java", "Kann Java das OOP Konzept?", "true", "userId"),
-                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true", "userId")));
+                new Question(null, "Java", "Kann Java das OOP Konzept?", "true", "123"),
+                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true", "123")));
     }
 
     @Test

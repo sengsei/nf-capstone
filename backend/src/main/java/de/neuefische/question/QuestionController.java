@@ -43,10 +43,7 @@ public class QuestionController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createQuestions(@RequestParam("csv")MultipartFile file, Principal principal) throws IOException {
-
-        UserDocument user = userService.findByEmail(principal.getName()).orElseThrow();
-
-        ImportStatus importStatus = questionService.createQuestions(file.getInputStream(), user.getId());
+        ImportStatus importStatus = questionService.createQuestions(file.getInputStream(), principal);
         if (importStatus == ImportStatus.SUCCESS) {
             return ResponseEntity.ok().build();
         } else if (importStatus == ImportStatus.PARTIAL) {
@@ -62,8 +59,8 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteQuestion(@PathVariable String id){
-        questionService.deleteQuestion(id);
+    public void deleteQuestion(@PathVariable String id, Principal principal){
+        questionService.deleteQuestion(id, principal);
     }
 }
 

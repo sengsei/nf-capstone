@@ -10,4 +10,5 @@ import java.util.List;
 public interface QuestionRepository extends MongoRepository<Question, String> {
     List<Question> findQuestionByCategoryNameAndUserId(String name, String userId);
     List<Question> findAllByUserId(String userId);
+    void deleteQuestionByIdAndUserId(String id, String userId);
 }
