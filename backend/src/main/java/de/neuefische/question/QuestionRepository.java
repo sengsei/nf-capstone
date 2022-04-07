@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends MongoRepository<Question, String> {
-    List<Question> findQuestionByCategoryName(String name);
+    List<Question> findQuestionByCategoryNameAndUserId(String name, String userId);
     List<Question> findAllByUserId(String userId);
 }

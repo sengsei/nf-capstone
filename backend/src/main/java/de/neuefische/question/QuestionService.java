@@ -24,8 +24,8 @@ public class QuestionService {
         return questionRepository.findAllByUserId(getUserID(principal));
     }
 
-    public List<Question> findByCategory(String categoryName) {
-        return questionRepository.findQuestionByCategoryName(categoryName);
+    public List<Question> findByCategory(String categoryName, Principal principal) {
+        return questionRepository.findQuestionByCategoryNameAndUserId(categoryName, getUserID(principal));
     }
 
     public Question addQuestion(Question question) {

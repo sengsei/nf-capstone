@@ -30,8 +30,8 @@ public class QuestionController {
     }
 
     @GetMapping("/{category}")
-    public List<Question> getQuestionListByCategory(@PathVariable String category) {
-        return questionService.findByCategory(category);
+    public List<Question> getQuestionListByCategory(@PathVariable String category, Principal principal) {
+        return questionService.findByCategory(category, principal);
     }
 
     @PostMapping

@@ -42,7 +42,7 @@ class QuestionServiceTest {
     }
 
     @Test
-    void shouldGetQuestionByCategorie() {
+    void shouldGetQuestionByCategoryAndUserId() {
         Question elem = new Question();
         elem.setQuestion("Java OOP?");
         elem.setCategoryName("Java");
@@ -53,15 +53,13 @@ class QuestionServiceTest {
         UserRepository userRepository = Mockito.mock(UserRepository.class);
         when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));
 
-        List<Question> questionList = List.of(elem);
-        QuestionRepository repo = mock(QuestionRepository.class);
+        QuestionRepository questionRepository = mock(QuestionRepository.class);
+        when(questionRepository.findQuestionByCategoryNameAndUserId("Java","123")).thenReturn(List.of(elem));
 
-        when(repo.findQuestionByCategoryName("Java")).thenReturn(questionList);
+        QuestionService questionService = new QuestionService(questionRepository, userRepository);
+        List<Question> actual = questionService.findByCategory("Java", principal);
 
-        QuestionService questionService = new QuestionService(repo, userRepository);
-        List<Question> actual = questionService.findByCategory("Java");
-
-        assertThat(actual).isEqualTo(questionList);
+        assertThat(actual.size()).isEqualTo(1);
     }
 
     @Test
