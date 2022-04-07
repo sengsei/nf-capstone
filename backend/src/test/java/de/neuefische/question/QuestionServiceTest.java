@@ -80,7 +80,7 @@ class QuestionServiceTest {
         when(questionRepository.save(elem)).thenReturn(savedElem);
 
         QuestionService questionService = new QuestionService(questionRepository, userRepository);
-        Question actual = questionService.addQuestion(elem);
+        Question actual = questionService.addQuestion(elem, principal);
 
         assertThat(actual).isSameAs(savedElem);
     }
@@ -137,7 +137,6 @@ class QuestionServiceTest {
         savedQuestion.setQuestionState("true");
 
         UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
-        Principal principal = () -> "user@mail.de";
 
         UserRepository userRepository = Mockito.mock(UserRepository.class);
         when(userRepository.findByEmail("user@mail.de")).thenReturn(Optional.of(user));

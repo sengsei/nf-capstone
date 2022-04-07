@@ -37,7 +37,7 @@ public class QuestionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Collection<Question> addQuestion(@RequestBody Question question, Principal principal) {
-        questionService.addQuestion(question);
+        questionService.addQuestion(question, principal);
         return questionService.getQuestionList(principal);
     }
 

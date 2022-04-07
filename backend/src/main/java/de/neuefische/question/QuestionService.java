@@ -29,7 +29,8 @@ public class QuestionService {
         return questionRepository.findQuestionByCategoryNameAndUserId(categoryName, getUserID(principal));
     }
 
-    public Question addQuestion(Question question) {
+    public Question addQuestion(Question question, Principal principal) {
+        question.setUserId(getUserID(principal));
         return questionRepository.save(question);
     }
 

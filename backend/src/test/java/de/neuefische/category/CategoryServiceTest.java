@@ -87,6 +87,7 @@ class CategoryServiceTest {
     void shouldThrowAnExceptionWhenCategoryIsTheSame() {
         Category elem = new Category();
         elem.setCategoryName("Java");
+        elem.setUserId("123");
 
         UserDocument user = new UserDocument("123", "user@mail.de", "user","user","User");
         Principal principal = () -> "user@mail.de";
