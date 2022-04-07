@@ -9,9 +9,12 @@ export default function QuestionListTrueFalse() {
     const params = useParams()
 
     const fetchAllQuestions = () => {
-
+        const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(response => {
                 if (response.ok) {
@@ -25,8 +28,12 @@ export default function QuestionListTrueFalse() {
     }
 
     const getQuestionByCategory = (categoryName : string) => {
+        const token = localStorage.getItem("token")
         return fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${categoryName}`,{
-
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         })
             .then(response => {
                 if (response.ok){

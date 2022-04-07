@@ -2,11 +2,14 @@ package de.neuefische.question;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import de.neuefische.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 
 import java.io.*;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -16,24 +19,26 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
 
-    public Collection<Question>getQuestionList() {
-        return questionRepository.findAll();
+    public Collection<Question>getQuestionList(Principal principal) {
+        return questionRepository.findAllByUserId(getUserID(principal));
     }
 
-    public List<Question> findByCategory(String categoryName) {
-        return questionRepository.findQuestionByCategoryName(categoryName);
+    public List<Question> findByCategory(String categoryName, Principal principal) {
+        return questionRepository.findQuestionByCategoryNameAndUserId(categoryName, getUserID(principal));
     }
 
-    public Question addQuestion(Question question) {
+    public Question addQuestion(Question question, Principal principal) {
+        question.setUserId(getUserID(principal));
         return questionRepository.save(question);
     }
 
-    public void deleteQuestion(String id) {
-        questionRepository.deleteById(id);
+    public void deleteQuestion(String id, Principal principal) {
+        questionRepository.deleteQuestionByIdAndUserId(id, getUserID(principal));
     }
 
-    public ImportStatus createQuestions(InputStream inputStream) {
+    public ImportStatus createQuestions(InputStream inputStream, Principal principal) {
         try (Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             CsvToBean<CsvItem> csvToBean = new CsvToBeanBuilder<CsvItem>(reader)
                     .withType(CsvItem.class)
@@ -41,7 +46,7 @@ public class QuestionService {
                     .build();
 
             questionRepository.saveAll(csvToBean.parse().stream()
-                    .map(CsvItem::toQuestion)
+                    .map(elem -> elem.toQuestion(getUserID(principal)))
                     .toList());
 
             return ImportStatus.SUCCESS;
@@ -66,5 +71,9 @@ public class QuestionService {
             }
             questionRepository.save(questionUnwrapped);
         }
+    }
+
+    private String getUserID(Principal principal) {
+        return userRepository.findByEmail(principal.getName()).get().getId();
     }
 }

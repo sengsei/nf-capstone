@@ -24,7 +24,11 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category, Principal principal) {
-        if (categoryRepository.findByCategoryName(category.getCategoryName()).isEmpty()){
+        if (categoryRepository.findByCategoryName(category.getCategoryName()).isEmpty()
+        ){
+            category.setUserId(getUserID(principal));
+            return categoryRepository.save(category);
+        } else if (!(getUserID(principal).equals(category.getUserId()))) {
             category.setUserId(getUserID(principal));
             return categoryRepository.save(category);
         }
