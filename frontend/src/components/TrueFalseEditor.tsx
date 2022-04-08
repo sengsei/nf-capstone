@@ -12,6 +12,7 @@ export default function TrueFalseEditor() {
     const[questions, setQuestions] = useState([] as Array<Question>)
     const[questionState, setQuestionState] = useState('')
     const [editMode, setEditMode] = useState(-1)
+    const [categories, setCategories] = useState([] as Array<Category>)
 
 
     useEffect(() => {
@@ -95,6 +96,25 @@ export default function TrueFalseEditor() {
             .catch(e => setErrorMessage(e.message))
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response =>
+            {
+                if(response.ok){
+                    return  response.json()
+                }
+                throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
+
+            })
+            .then((catFromBackend: Array<Category>) => setCategories(catFromBackend))
+            .catch((e: Error) => setErrorMessage(e.message))
+    }, [])
 
 
     useEffect(() => {
@@ -166,6 +186,10 @@ export default function TrueFalseEditor() {
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
             <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
+            <input list={"categories"}/>
+            <datalist id={"categories"}>
+                {categories.map(e => { return <option key={e.id} id={"categories"} value={e.categoryName}>{e.categoryName}</option>})}
+            </datalist>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
@@ -179,7 +203,7 @@ export default function TrueFalseEditor() {
                         <div>
                             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
                             <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
-                            <input type={"text"} placeholder={"true oder false"} value={questionState} onChange={ev=>setQuestionState(ev.target.value)}/>
+                            <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
                             <button onClick={() => changeQuestion(elem.id)}>Ändern</button>
                         </div>
                     }
