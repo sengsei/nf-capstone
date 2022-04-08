@@ -1,4 +1,4 @@
-import {Question} from "../model";
+import {Category, Question} from "../model";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -71,6 +71,31 @@ export default function TrueFalseEditor() {
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
+    const addCategory = () => {
+        const token = localStorage.getItem("token")
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                categoryName: categoryName
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw Error('Eine Kategorie kann nicht hinzugefügt werden.')
+            })
+            .then((data: Array<Category>) => data
+            )
+            .catch(e => setErrorMessage(e.message))
+    }
+
+
+
     useEffect(() => {
         fetchAllQuestions()
     }, [])
@@ -133,6 +158,11 @@ export default function TrueFalseEditor() {
             .then(() => setCategoryName(''))
     }
 
+    const addQuestionAndAddCategory = () => {
+        addQuestion()
+        addCategory()
+    }
+
     return(
         <div>
             <div>
@@ -141,7 +171,7 @@ export default function TrueFalseEditor() {
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
             <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
             <input type={"text"} placeholder={"true oder false"} value={state} onChange={ev => setState(ev.target.value)}/>
-            {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
+            {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestionAndAddCategory}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
                  <div onClick={() => setEditMode(index)}>{elem.question}</div>
