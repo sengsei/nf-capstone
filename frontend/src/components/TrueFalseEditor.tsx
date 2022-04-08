@@ -46,6 +46,7 @@ export default function TrueFalseEditor() {
             } )
             .then((data: Array<Question>) => data)
             .then(fetchAllQuestions)
+            .then(addCategory)
             .catch(e => setErrorMessage(e.message))
     }
 
@@ -158,11 +159,6 @@ export default function TrueFalseEditor() {
             .then(() => setCategoryName(''))
     }
 
-    const addQuestionAndAddCategory = () => {
-        addQuestion()
-        addCategory()
-    }
-
     return(
         <div>
             <div>
@@ -170,8 +166,8 @@ export default function TrueFalseEditor() {
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
             <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
-            <input type={"text"} placeholder={"true oder false"} value={state} onChange={ev => setState(ev.target.value)}/>
-            {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestionAndAddCategory}>Hinzufügen</button>}
+            <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
+            {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
                  <div onClick={() => setEditMode(index)}>{elem.question}</div>
