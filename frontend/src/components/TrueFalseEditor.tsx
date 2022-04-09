@@ -13,8 +13,6 @@ export default function TrueFalseEditor() {
     const [editMode, setEditMode] = useState(-1)
     const [categories, setCategories] = useState([] as Array<Category>)
 
-
-
     useEffect(() => {
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
@@ -41,6 +39,7 @@ export default function TrueFalseEditor() {
                 throw Error('Eine Frage kann nicht hinzugefügt werden.')
             } )
             .then((data: Array<Question>) => data)
+            .then(fetchAllQuestions)
             .catch(e => setErrorMessage(e.message))
     }
 
@@ -66,30 +65,6 @@ export default function TrueFalseEditor() {
     useEffect(() => {
         fetchAllQuestions()
     }, [])
-
-    useEffect(() => {
-        fetchAllCategories()
-    }, [])
-
-    const fetchAllCategories = () => {
-        const token = localStorage.getItem("token")
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        })
-            .then(response =>
-            {
-                if(response.ok){
-                    return  response.json()
-                }
-                throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
-
-            })
-            .then((catFromBackend: Array<Category>) => setCategories(catFromBackend))
-            .catch((e: Error) => setErrorMessage(e.message))
-    }
 
     const deleteQuestion = (question: Question) => {
         const token = localStorage.getItem("token")
@@ -149,6 +124,30 @@ export default function TrueFalseEditor() {
             .then(() => setCategoryName(''))
     }
 
+    const fetchAllCategories = () => {
+        const token = localStorage.getItem("token")
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response =>
+            {
+                if(response.ok){
+                    return  response.json()
+                }
+                throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
+
+            })
+            .then((catFromBackend: Array<Category>) => setCategories(catFromBackend))
+            .catch((e: Error) => setErrorMessage(e.message))
+    }
+
+    useEffect(() => {
+        fetchAllCategories();
+    }, [])
+
 
     return(
         <div>
@@ -156,7 +155,10 @@ export default function TrueFalseEditor() {
                 <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
-            <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
+            <select value={categoryName} onChange={ev => setCategoryName(ev.target.value)}>
+                <option value={''}>Wähle eine Kategorie</option>
+                {categories.map(e => <option key={e.id}>{e.categoryName}</option>)}
+            </select>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
