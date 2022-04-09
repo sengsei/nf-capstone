@@ -2,10 +2,8 @@ package de.neuefische.question;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import de.neuefische.category.CategoryRepository;
 import de.neuefische.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 
