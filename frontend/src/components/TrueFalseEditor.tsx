@@ -5,9 +5,8 @@ import axios from "axios";
 
 
 export default function TrueFalseEditor() {
-    const[categoryName, setCategoryName] = useState(localStorage.getItem('category') ?? '')
-    const[question, setQuestion] = useState(localStorage.getItem('question') ?? '')
-    const[state, setState] = useState( '')
+    const[categoryName, setCategoryName] = useState('')
+    const[question, setQuestion] = useState('')
     const[errorMessage, setErrorMessage] = useState('')
     const[questions, setQuestions] = useState([] as Array<Question>)
     const[questionState, setQuestionState] = useState('')
@@ -16,17 +15,12 @@ export default function TrueFalseEditor() {
 
 
     useEffect(() => {
-        localStorage.setItem('question', question)
-        localStorage.setItem('category', categoryName)
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
-    } , [question, categoryName]);
+    } , []);
 
     const addQuestion = () => {
         const token = localStorage.getItem("token")
-        setCategoryName('')
-        setQuestion('')
-        setState('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
             method: 'POST',
             headers: {
@@ -36,7 +30,7 @@ export default function TrueFalseEditor() {
             body: JSON.stringify({
                 categoryName: categoryName,
                 question: question,
-                questionState: state
+                questionState: questionState
             })
         })
             .then(response => {
@@ -47,15 +41,11 @@ export default function TrueFalseEditor() {
             } )
             .then((data: Array<Question>) => data)
             .then(fetchAllQuestions)
-            .then(addCategory)
             .catch(e => setErrorMessage(e.message))
     }
 
     const fetchAllQuestions = () => {
         const token = localStorage.getItem("token")
-        setQuestionState('')
-        setQuestion('')
-        setCategoryName('')
         fetch(`${process.env.REACT_APP_BASE_URL}/api/questions`, {
             method: "GET",
             headers: {
@@ -73,30 +63,16 @@ export default function TrueFalseEditor() {
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
-    const addCategory = () => {
-        const token = localStorage.getItem("token")
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + token
-            },
-            body: JSON.stringify({
-                categoryName: categoryName
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                }
-                throw Error('Eine Kategorie kann nicht hinzugefügt werden.')
-            })
-            .then((data: Array<Category>) => data
-            )
-            .catch(e => setErrorMessage(e.message))
-    }
+    useEffect(() => {
+        fetchAllCategories()
+    }, [])
+
 
     useEffect(() => {
+        fetchAllQuestions()
+    }, [])
+
+    const fetchAllCategories = () => {
         const token = localStorage.getItem("token")
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
             method: "GET",
@@ -114,12 +90,7 @@ export default function TrueFalseEditor() {
             })
             .then((catFromBackend: Array<Category>) => setCategories(catFromBackend))
             .catch((e: Error) => setErrorMessage(e.message))
-    }, [])
-
-
-    useEffect(() => {
-        fetchAllQuestions()
-    }, [])
+    }
 
     const deleteQuestion = (question: Question) => {
         const token = localStorage.getItem("token")
@@ -185,11 +156,9 @@ export default function TrueFalseEditor() {
                 <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
-            <input type={"text"} placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
-            <input list={"categories"}/>
-            <datalist id={"categories"}>
+            <select onChange={ev => setCategoryName(ev.target.value)}>
                 {categories.map(e => { return <option key={e.id} id={"categories"} value={e.categoryName}>{e.categoryName}</option>})}
-            </datalist>
+            </select>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
@@ -208,9 +177,6 @@ export default function TrueFalseEditor() {
                         </div>
                     }
                 </div>)}
-
-
-
 
             </div>
         </div>
