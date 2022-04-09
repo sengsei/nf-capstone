@@ -14,6 +14,7 @@ export default function TrueFalseEditor() {
     const [categories, setCategories] = useState([] as Array<Category>)
 
 
+
     useEffect(() => {
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
@@ -40,7 +41,6 @@ export default function TrueFalseEditor() {
                 throw Error('Eine Frage kann nicht hinzugefügt werden.')
             } )
             .then((data: Array<Question>) => data)
-            .then(fetchAllQuestions)
             .catch(e => setErrorMessage(e.message))
     }
 
@@ -64,12 +64,11 @@ export default function TrueFalseEditor() {
     }
 
     useEffect(() => {
-        fetchAllCategories()
+        fetchAllQuestions()
     }, [])
 
-
     useEffect(() => {
-        fetchAllQuestions()
+        fetchAllCategories()
     }, [])
 
     const fetchAllCategories = () => {
@@ -150,15 +149,14 @@ export default function TrueFalseEditor() {
             .then(() => setCategoryName(''))
     }
 
+
     return(
         <div>
             <div>
                 <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
             </div>
             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
-            <select onChange={ev => setCategoryName(ev.target.value)}>
-                {categories.map(e => { return <option key={e.id} id={"categories"} value={e.categoryName}>{e.categoryName}</option>})}
-            </select>
+            <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
