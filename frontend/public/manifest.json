@@ -1,6 +1,5 @@
 {
   "short_name": "Front- & Backend",
-  "name": "Demo project to deploy front- and backend together",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
