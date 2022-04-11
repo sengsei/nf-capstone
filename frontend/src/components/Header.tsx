@@ -13,7 +13,7 @@ export default function Header() {
             <div>TRUTHY</div>
             <button onClick={() => routeToPath('login')}>Login</button>
             <button>Logout</button>
-            <button onClick={() => routeToPath('categories')}>Home</button>
+            <button onClick={() => routeToPath('home')}>Home</button>
             <button>Konto</button>
             <button onClick={() => routeToPath('editormenue')}>Editor</button>
         </div>
