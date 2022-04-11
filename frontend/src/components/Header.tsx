@@ -8,11 +8,16 @@ export default function Header() {
         navigate("/"+where)
     }
 
+    const logout = () => {
+        localStorage.setItem("token", "")
+        navigate("/login")
+    }
+
     return(
         <div>
             <div>TRUTHY</div>
             <button onClick={() => routeToPath('login')}>Login</button>
-            <button>Logout</button>
+            <button onClick={() => logout()}>Logout</button>
             <button onClick={() => routeToPath('home')}>Home</button>
             <button>Konto</button>
             <button onClick={() => routeToPath('editormenue')}>Editor</button>
