@@ -1,27 +1,12 @@
 import Header from "./components/Header";
-import {Outlet, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
-
-
+import {Outlet} from "react-router-dom";
 
 function App() {
 
-    const navigate = useNavigate()
-
-    const routeToPath = (where: string) => {
-        navigate("/" + where)
-    }
-
-    useEffect(() => {
-        routeToPath("home")
-    }, [])
-
     return (
         <div>
-
-                <Header/>
-                <Outlet/>
-
+            <Header/>
+            <Outlet/>
         </div>
     );
 }
