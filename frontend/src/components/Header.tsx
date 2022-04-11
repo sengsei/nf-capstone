@@ -10,7 +10,7 @@ export default function Header() {
 
     return(
         <div>
-            <div>Titel</div>
+            <div>TRUTHY</div>
             <button onClick={() => routeToPath('login')}>Login</button>
             <button>Logout</button>
             <button onClick={() => routeToPath('categories')}>Home</button>
