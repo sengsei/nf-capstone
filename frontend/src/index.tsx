@@ -28,6 +28,7 @@ ReactDOM.render(
                         <Route path={'/questions/trivia-tf'} element={<TriviaTrueFalse/>}/>
                         <Route path={'/login'} element={<Login/>}/>
                         <Route path={'/register'} element={<Register/>}/>
+                        <Route path={"/"} element={<LandingPage/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>
