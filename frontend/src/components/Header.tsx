@@ -15,7 +15,7 @@ export default function Header() {
 
     return(
         <div>
-            <div>TRUTHY</div>
+            <div>TRUTHY </div>
             <button onClick={() => routeToPath('login')}>Login</button>
             <button onClick={() => logout()}>Logout</button>
             <button onClick={() => routeToPath('home')}>Home</button>
