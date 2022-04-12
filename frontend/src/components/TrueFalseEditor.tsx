@@ -12,6 +12,8 @@ export default function TrueFalseEditor() {
     const[questionState, setQuestionState] = useState('')
     const [editMode, setEditMode] = useState(-1)
     const [categories, setCategories] = useState([] as Array<Category>)
+    const [image, setImage] = useState({} as File)
+    const [imageUrl, setImageUrl] = useState('')
 
     useEffect(() => {
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
@@ -144,6 +146,20 @@ export default function TrueFalseEditor() {
             .catch((e: Error) => setErrorMessage(e.message))
     }
 
+    const uploadImage = () => {
+        const formData = new FormData()
+        formData.append('file', image)
+        formData.append('upload_preset', 'z7uvczz9')
+
+        fetch(`https://api.cloudinary.com/v1_1/robo42/image/upload`, {
+            method: "POST",
+            body: formData
+        })
+            .then((response) => {
+                response.json()
+            })
+    }
+
     useEffect(() => {
         fetchAllCategories();
     }, [])
@@ -160,11 +176,14 @@ export default function TrueFalseEditor() {
                 {categories.map(e => <option key={e.id}>{e.categoryName}</option>)}
             </select>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
+
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
-                 <div onClick={() => setEditMode(index)}>{elem.question}</div>
-                <button onClick={() => deleteQuestion(elem)}>Löschen</button>
+                    <div onClick={() => setEditMode(index)}>{elem.question}</div>
+                    <button onClick={() => deleteQuestion(elem)}>Löschen</button>
+                    <input type={"file"} accept={".png"} onChange={ev => {if (ev.target.files != null) {setImage(ev.target.files[0])}}}/>
+                    <div>{image.size > 0 && <button onClick={uploadImage}>Upload</button>}</div>
 
                     {
                         editMode === index
