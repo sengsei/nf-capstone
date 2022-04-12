@@ -9,7 +9,7 @@ export default function Header() {
     }
 
     const logout = () => {
-        localStorage.setItem("token", "")
+        localStorage.removeItem("token")
         navigate("/login")
     }
 
