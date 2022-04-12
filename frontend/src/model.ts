@@ -10,6 +10,7 @@ export interface Question {
     categoryName: string
     question: string
     questionState: string
+    imageUrl?: string
 }
 
 export enum Difficulty {

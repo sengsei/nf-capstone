@@ -9,7 +9,7 @@ export default function TrueFalseEditor() {
     const[question, setQuestion] = useState('')
     const[errorMessage, setErrorMessage] = useState('')
     const[questions, setQuestions] = useState([] as Array<Question>)
-    const[questionState, setQuestionState] = useState('')
+    const[questionState, setQuestionState] = useState('false')
     const [editMode, setEditMode] = useState(-1)
     const [categories, setCategories] = useState([] as Array<Category>)
     const [image, setImage] = useState({} as File)
@@ -31,7 +31,8 @@ export default function TrueFalseEditor() {
             body: JSON.stringify({
                 categoryName: categoryName,
                 question: question,
-                questionState: questionState
+                questionState: questionState,
+                imageUrl: imageUrl
             })
         })
             .then(response => {
@@ -42,6 +43,10 @@ export default function TrueFalseEditor() {
             } )
             .then((data: Array<Question>) => data)
             .then(fetchAllQuestions)
+            .then(() => setImageUrl(''))
+            .then(() => setQuestion(''))
+            .then(() => setQuestionState(''))
+            .then(() => setCategoryName(''))
             .catch(e => setErrorMessage(e.message))
     }
 
@@ -155,9 +160,9 @@ export default function TrueFalseEditor() {
             method: "POST",
             body: formData
         })
-            .then((response) => {
+            .then((response) =>
                 response.json()
-            })
+            ).then(data => setImageUrl(data.secure_url))
     }
 
     useEffect(() => {
@@ -176,14 +181,15 @@ export default function TrueFalseEditor() {
                 {categories.map(e => <option key={e.id}>{e.categoryName}</option>)}
             </select>
             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
+            <input type={"file"} accept={".png"} onChange={ev => {if (ev.target.files != null) {setImage(ev.target.files[0])}}}/>
+            <div>{image.size > 0 && <button onClick={uploadImage}>Upload</button>}</div>
 
             {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
                     <div onClick={() => setEditMode(index)}>{elem.question}</div>
                     <button onClick={() => deleteQuestion(elem)}>Löschen</button>
-                    <input type={"file"} accept={".png"} onChange={ev => {if (ev.target.files != null) {setImage(ev.target.files[0])}}}/>
-                    <div>{image.size > 0 && <button onClick={uploadImage}>Upload</button>}</div>
+
 
                     {
                         editMode === index
