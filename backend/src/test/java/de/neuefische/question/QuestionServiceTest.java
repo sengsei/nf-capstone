@@ -118,8 +118,8 @@ class QuestionServiceTest {
         questionService.createQuestions(input, principal);
 
         verify(questionRepository).saveAll(List.of(
-                new Question(null, "Java", "Kann Java das OOP Konzept?", "true", "123"),
-                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true", "123")));
+                new Question(null, "Java", "Kann Java das OOP Konzept?", "true","123", null),
+                new Question(null, "Python", "Ist Python eine Interpreter Sprache?", "true", "123", null)));
     }
 
     @Test

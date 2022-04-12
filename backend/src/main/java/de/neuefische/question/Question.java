@@ -18,4 +18,5 @@ public class Question {
     private String question;
     private String questionState;
     private String userId;
+    private String imageUrl;
 }
