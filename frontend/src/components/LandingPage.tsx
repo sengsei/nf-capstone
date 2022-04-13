@@ -12,21 +12,19 @@ export default function LandingPage() {
 
     return (
         <div>
-            <div className={"flex flex-row bg-[#6B8A47] font-sans text-[#F6C915]"}>
-                <div>
-                    TRUTHY ist ein kostenloses Webangebot für Studierende, die ihr Programmierwissen abfragen und
-                    erweitern
-                    möchten.
-                    <br/>
+            <div className={"flex flex-row bg-[#6B8A47] font-mono text-[#F6C915] mx-6"}>
+                <div className={"basis-1/2"}>
+                    TRUTHY ist ein kostenloses Webangebot für Studierende,
+                    die ihr Programmierwissen abfragen und erweitern möchten.
                     Mit true/false Fragen wird geprüft was Du schon kannst und was nochmal gelernt werden sollte.
-                    <br/>
                     Mit dem TRUTHY Editor kannst Du deine individuellen Fragen hinzufügen.
                 </div>
-                <img alt={"Schülerin mit Notebook"} width={"400"} src={andrea}/>
+
+                <img className={"basis-1/2"} alt={"Schülerin mit Notebook"} width={"400"} src={andrea}/>
             </div>
-            <div className={"flex flex-row bg-[#FAC240]"}>
-                <div className={"basis-1/2"}><img alt={"codes"} width={"200"} src={codes}/></div>
-                <div className={"basis-1/2 bg-[#D1EEE9] font-sans text-[#6B8A47]"}>
+            <div className={"flex flex-row bg-[#FAC240] mx-6"}>
+                <div className={"basis-1/2"}><img alt={"codes"} width={"400"} src={codes}/></div>
+                <div className={"basis-1/2 bg-[#D1EEE9] font-mono text-[#6B8A47]"}>
                     Ganz einfach programmieren lernen!
                     <br/>
                     Log Dich ein und leg los...
