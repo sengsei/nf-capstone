@@ -7,6 +7,8 @@ export default function QuestionListTrueFalse() {
 
     const [questions, setQuestions] = useState([] as Array<Question>)
     const [errorMessage, setErrorMessage] = useState('')
+    const [questionCounter, setQuestionCounter] = useState(0);
+    const [numberOfAllQuestions, setNumberOfAllQuestions] = useState(0)
     const params = useParams()
 
     const fetchAllQuestions = () => {
@@ -51,7 +53,7 @@ export default function QuestionListTrueFalse() {
         getQuestionByCategory(params.categoryName ?? '')
             .then((data: Array<Question>) => setQuestions(data))
 
-    }, [params.categoryName])
+    }, [params.categoryName, questionCounter])
 
     useEffect(() => {
             const timoutId = setTimeout(() => setErrorMessage(''), 10000)
@@ -59,20 +61,33 @@ export default function QuestionListTrueFalse() {
         }, [errorMessage]
     )
 
+    const handleQuestionCount = () => {
+        setQuestionCounter(questionCounter + 1)
+        setNumberOfAllQuestions(questions.length)
+    }
+
     const checkWrongAnswer = (elem: Question) => {
         const elemById = document.getElementById(elem.id)!;
         elem.questionState === 'false' ? elemById.setAttribute("style",'background-color:green')
             : elemById.setAttribute("style",'background-color:red')
+        if (elem.questionState === 'false'){
+            handleQuestionCount()
+        }
     }
 
     const checkRightAnswer = (elem: Question) => {
         const elemById = document.getElementById(elem.id)!;
         elem.questionState === 'true' ? elemById.setAttribute("style",'background-color:green')
             : elemById.setAttribute("style",'background-color:red')
+        if (elem.questionState === 'true'){
+            handleQuestionCount()
+        }
     }
 
     return (
         <div>
+
+            <div>{questionCounter} von {numberOfAllQuestions}</div>
             {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <div id={elem.id}
                                                                                  key={elem.id}> {elem.question}
                 <div><img src={elem.imageUrl} alt={"Bild mit Wahr/Falsch Aufgabenstellung"}/></div>
