@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Category} from "../model";
 import {useNavigate} from "react-router-dom";
+import mull from "../images/mull.png"
 
 export default function CategoryList() {
 
@@ -60,15 +61,18 @@ export default function CategoryList() {
     }
 
     return (
-        <div>
+        <div className={"bg-[#D1EEE9] mx-6 h-80"}>
             {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
-                <p key={elem.id}>{elem.categoryName}
-                    <button onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Wahr/Falsch Fragen</button>
-                    <button onClick={() => deleteCategory(elem)}>Löschen</button>
-                </p>
+                <div className={"flex flex-row mt-2 "} key={elem.id}>{<div className={"mr-4 mt-2"}>{elem.categoryName}</div>}
+                    <button
+                        className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-2 mt-2"}
+                        onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Wahr/Falsch Fragen
+                    </button>
+                    <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem)}/>
+                </div>
             )}
-        <div>
-            <button onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Wahr/Falsch</button>
+        <div className={"flex flex-row mt-5 px-20"}>
+            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Wahr/Falsch</button>
         </div>
         </div>
     )
