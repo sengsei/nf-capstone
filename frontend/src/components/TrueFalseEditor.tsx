@@ -1,6 +1,7 @@
 import {Category, Question} from "../model";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import mull from "../images/mull.png";
 
 
 
@@ -171,7 +172,7 @@ export default function TrueFalseEditor() {
 
 
     return(
-        <div>
+        <div className={"bg-[#D1EEE9] mx-6"}>
             <div>
                 <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
             </div>
@@ -184,11 +185,11 @@ export default function TrueFalseEditor() {
             <input type={"file"} accept={".png"} onChange={ev => {if (ev.target.files != null) {setImage(ev.target.files[0])}}}/>
             <div>{image.size > 0 && <button onClick={uploadImage}>Upload</button>}</div>
 
-            {errorMessage ? <p>{errorMessage}</p> : <button onClick={addQuestion}>Hinzufügen</button>}
+            {errorMessage ? <p>{errorMessage}</p> : <button  className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={addQuestion}>Hinzufügen</button>}
             <div>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
                     <div onClick={() => setEditMode(index)}>{elem.question}</div>
-                    <button onClick={() => deleteQuestion(elem)}>Löschen</button>
+                    <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteQuestion(elem)}/>
 
 
                     {
@@ -198,7 +199,7 @@ export default function TrueFalseEditor() {
                             <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
                             <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
                             <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
-                            <button onClick={() => changeQuestion(elem.id)}>Ändern</button>
+                            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"}  onClick={() => changeQuestion(elem.id)}>Ändern</button>
                         </div>
                     }
                 </div>)}

@@ -43,7 +43,7 @@ export default function TriviaTrueFalse() {
     }
 
     return (
-        <div>
+        <div className={"bg-[#D1EEE9] mx-6"}>
             <label htmlFor={"qname"}>Gebe die Anzahl der Fragen zwischen (1-10) ein:</label>
             <input type={"number"} id={"qname"} placeholder={"Anzahl der Fragen"} min={"1"} max={"10"} value={amount}
                    onChange={ev => setAmount(ev.target.valueAsNumber)}/>
