@@ -90,7 +90,7 @@ export default function QuestionListTrueFalse() {
             <div>{questionCounter} von {numberOfAllQuestions}</div>
             {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <div id={elem.id}
                                                                                  key={elem.id}> {elem.question}
-                <div><img src={elem.imageUrl} alt={"Bild mit Wahr/Falsch Aufgabenstellung"}/></div>
+                <div><img src={elem.imageUrl} alt={""}/></div>
                 <div>
                     <button onClick={() => checkRightAnswer(elem)}>W</button>
                     <button onClick={() => checkWrongAnswer(elem)}>F</button>

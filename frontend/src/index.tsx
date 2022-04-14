@@ -12,6 +12,7 @@ import EditorCategories from "./components/EditorCategories";
 import TriviaTrueFalse from "./components/TriviaTrueFalse";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import "./index.css"
 
 ReactDOM.render(
     <React.StrictMode>

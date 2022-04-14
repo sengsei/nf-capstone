@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {Category, Question} from "../model";
+import mull from "../images/mull.png";
 
 
 export default function EditorCategories() {
@@ -100,23 +101,23 @@ export default function EditorCategories() {
     }
 
     return (
-        <div>
+        <div className={"bg-[#D1EEE9] mx-6 px-2"}>
             <input type={"text"} placeholder={"Kategorie"} value={category}
                    onChange={ev => setCategory(ev.target.value)}/>
             {errorMessage ? <p>{errorMessage}</p> :
-                <button id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
+                <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
             <div>
 
                 {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><div
                     onClick={() => setEditMode(index)}>{elem.categoryName}</div>
-                    <button onClick={() => deleteCategory(elem.id)}>Löschen</button>
+                    <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem.id)}/>
 
                     {
                         editMode === index
                         &&
                         <div>
                             <input type={"text"} value={category} placeholder={"Kategorie"} onChange={ev => setCategory(ev.target.value)}/>
-                            <button onClick={() => changeCategory(elem.id)}>Ändern</button>
+                            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => changeCategory(elem.id)}>Ändern</button>
                         </div>
                     }
                 </div>)}
