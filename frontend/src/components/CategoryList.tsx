@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
-import {Category} from "../model";
-import {useNavigate} from "react-router-dom";
+import {Category, Question} from "../model";
+import {useNavigate, useParams} from "react-router-dom";
 import mull from "../images/mull.png"
 
 export default function CategoryList() {
 
     const [categories, setCategories] = useState([] as Array<Category>)
     const[errorMessage, setErrorMessage] = useState('')
+    const [questions, setQuestions] = useState([] as Array<Question>)
+    const params = useParams()
 
     const navigate = useNavigate()
 
@@ -40,6 +42,12 @@ export default function CategoryList() {
         }, [errorMessage]
     )
 
+    useEffect(() => {
+            getQuestionByCategory(params.categoryName ?? '')
+                .then((data: Array<Question>) => setQuestions(data))
+
+    }, [params.categoryName])
+
     const routeToTrueFalseQuestion = (categoryName:string) => {
       navigate(`/questions/${categoryName}`)
     }
@@ -60,13 +68,31 @@ export default function CategoryList() {
 
     }
 
+    const getQuestionByCategory = (categoryName : string) => {
+        const token = localStorage.getItem("token")
+        return fetch(`${process.env.REACT_APP_BASE_URL}/api/questions/${categoryName}`,{
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                if (response.ok){
+                    return response.json()
+                } else {
+                    throw Error("Keine Frage mit der Kategorie "+categoryName+" gefunden!")
+                }
+            })
+    }
+
     return (
         <div className={"bg-[#D1EEE9] mx-6 h-80"}>
             {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
                 <div className={"flex flex-row mt-2 "} key={elem.id}>{<div className={"mr-4 mt-2"}>{elem.categoryName}</div>}
+                    <div className={"mr-4 mt-2"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
                     <button
                         className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-2 mt-2"}
-                        onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Wahr/Falsch Fragen
+                        onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Fragen
                     </button>
                     <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem)}/>
                 </div>
