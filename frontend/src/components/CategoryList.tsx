@@ -3,6 +3,7 @@ import {Category, Question} from "../model";
 import {useNavigate, useParams} from "react-router-dom";
 import mull from "../images/mull.png"
 
+
 export default function CategoryList() {
 
     const [categories, setCategories] = useState([] as Array<Category>)
@@ -86,21 +87,28 @@ export default function CategoryList() {
     }
 
     return (
-        <div className={"bg-[#D1EEE9] mx-6 h-80"}>
+        <div>
+        <div className={"overflow-scroll w-96 h-96 bg-[#fffaaf] mx-6"}>
             {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
-                <div className={"flex flex-row mt-2 "} key={elem.id}>{<div className={"mr-4 mt-2"}>{elem.categoryName}</div>}
-                    <div className={"mr-4 mt-2"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
+                <div className={"flex flex-row mt-2 p-8"} key={elem.id}>{<div className={"mr-4 mt-2 text-[#1e5a78]"}>{elem.categoryName}</div>}
+                    <div className={"mr-4 mt-2 text-[#1e5a78]"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
                     <button
-                        className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-2 mt-2"}
+                        className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-2 mt-2"}
                         onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Fragen
                     </button>
                     <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem)}/>
                 </div>
             )}
-        <div className={"flex flex-row mt-5 px-20"}>
-            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Wahr/Falsch</button>
         </div>
-        </div>
+
+            <div className="flex flex-row mt-2 p-8 bg-[#1e5a78] mx-6">
+                <div>
+                    <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-3 mt-2 mx-6"}
+                            onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Fragen
+                    </button>
+                </div>
+            </div>
+            </div>
     )
 
 }
