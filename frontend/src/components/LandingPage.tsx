@@ -12,7 +12,7 @@ export default function LandingPage() {
 
     return (
         <div>
-            <div className={"flex flex-row bg-[#6B8A47] font-mono text-[#F6C915] mx-6"}>
+            <div className={"flex flex-row bg-[#7ea87b] font-mono text-[#FFFFFF] mx-6 text-center"}>
                 <div className={"basis-1/2"}>
                     TRUTHY ist ein kostenloses Webangebot für Studierende,
                     die ihr Programmierwissen abfragen und erweitern möchten.
@@ -22,18 +22,18 @@ export default function LandingPage() {
 
                 <img className={"basis-1/2"} alt={"Schülerin mit Notebook"} width={"400"} src={andrea}/>
             </div>
-            <div className={"flex flex-row bg-[#FAC240] mx-6"}>
-                <div className={"basis-1/2"}><img alt={"codes"} width={"400"} src={codes}/></div>
-                <div className={"basis-1/2 bg-[#D1EEE9] font-mono text-[#6B8A47]"}>
+            <div className={"flex flex-row bg-[#fffaaf] mx-6 h-96"}>
+                <div className={"basis-1/2 p-20"}><img alt={"codes"} width={300} src={codes}/></div>
+                <div className={"basis-1/2 bg-[#1e5a78] font-mono text-[#FFFFFF]"}>
                     Ganz einfach programmieren lernen!
                     <br/>
                     Log Dich ein und leg los...
                     <br/>
-                    <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-8 mt-1 "}
+                    <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] text-2xl rounded-md px-8 mt-2"}
                             onClick={() => routeToPath("categories")}>Start
                     </button>
                     <br/>
-                    <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-2 mt-2"}
+                    <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] text-2xl rounded-md px-2 mt-2"}
                             onClick={() => routeToPath("register")}>Registrieren
                     </button>
                 </div>
