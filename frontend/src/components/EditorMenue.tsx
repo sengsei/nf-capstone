@@ -10,10 +10,10 @@ export default function EditorMenue() {
     }
 
     return(
-        <div className={"bg-[#D1EEE9] mx-6 h-80"}>
-            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => routeToPath('editorcategories')}>Kategorie-Editor</button>
+        <div className={"bg-[#1e5a78] mx-6 h-80"}>
+            <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-3 mt-2 mx-6"} onClick={() => routeToPath('editorcategories')}>Kategorie-Editor</button>
             <br/>
-            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => routeToPath('truefalseedit')}>True/False Editor</button>
+            <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-3 mt-2 mx-6"} onClick={() => routeToPath('truefalseedit')}>True/False Editor</button>
         </div>
     )
 }
