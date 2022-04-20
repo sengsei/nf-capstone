@@ -88,7 +88,7 @@ export default function CategoryList() {
 
     return (
         <div>
-        <div className={"overflow-scroll w-96 h-96 bg-[#fffaaf] mx-6"}>
+        <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
             {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
                 <div className={"flex flex-row mt-2 p-8"} key={elem.id}>{<div className={"mr-4 mt-2 font-bold text-[#1e5a78] text-xl"}>{elem.categoryName}</div>}
                     <div className={"mr-4 mt-2 text-[#1e5a78]"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
