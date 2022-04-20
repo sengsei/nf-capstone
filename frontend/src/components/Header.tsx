@@ -15,13 +15,13 @@ export default function Header() {
     }
 
     return(
-        <div className={"flex space-x-4 bg-[#A7C584] my-6 mx-6"}>
+        <div className={"flex space-x-4 bg-[#7ea87b] my-6 mx-6"}>
             <div><img alt={"Logo"} width={"200"} src={logo}/></div>
-            <div><button className={"font-bold text-[#F6C915]"} onClick={() => routeToPath('login')}>Login</button></div>
-            <div><button className={"font-bold text-[#F6C915]"} onClick={() => logout()}>Logout</button></div>
-            <div><button className={"font-bold text-[#F6C915]"} onClick={() => routeToPath('home')}>Home</button></div>
-            <div><button className={"font-bold text-[#F6C915]"}>Konto</button></div>
-            <div><button className={"font-bold text-[#F6C915]"} onClick={() => routeToPath('editormenue')}>Editor</button></div>
+            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('login')}>Login</button></div>
+            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => logout()}>Logout</button></div>
+            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('home')}>Home</button></div>
+            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"}>Konto</button></div>
+            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('editormenue')}>Editor</button></div>
         </div>
     )
 }
