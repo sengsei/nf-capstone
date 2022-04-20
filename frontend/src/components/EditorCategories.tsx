@@ -116,7 +116,7 @@ export default function EditorCategories() {
                         editMode === index
                         &&
                         <div>
-                            <input type={"text"} value={category} placeholder={"Kategorie"} onChange={ev => setCategory(ev.target.value)}/>
+                            <input className={"ml-2"} type={"text"} value={category} placeholder={"Kategorie"} onChange={ev => setCategory(ev.target.value)}/>
                             <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"} onClick={() => changeCategory(elem.id)}>Ändern</button>
                         </div>
                     }
