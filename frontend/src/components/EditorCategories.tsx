@@ -101,23 +101,23 @@ export default function EditorCategories() {
     }
 
     return (
-        <div className={"bg-[#D1EEE9] mx-6 px-2"}>
-            <input type={"text"} placeholder={"Kategorie"} value={category}
+        <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
+            <input type={"text"} className={"block px-3 rounded ease-in-out mt-6 ml-2"} placeholder={"Kategorie"} value={category}
                    onChange={ev => setCategory(ev.target.value)}/>
             {errorMessage ? <p>{errorMessage}</p> :
-                <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
+                <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"} id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
             <div>
 
-                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><div
+                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div key={elem.id}><div className={"font-bold text-[#1e5a78] ml-2"}
                     onClick={() => setEditMode(index)}>{elem.categoryName}</div>
-                    <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem.id)}/>
+                    <img className={"ml-2"} alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem.id)}/>
 
                     {
                         editMode === index
                         &&
                         <div>
                             <input type={"text"} value={category} placeholder={"Kategorie"} onChange={ev => setCategory(ev.target.value)}/>
-                            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={() => changeCategory(elem.id)}>Ändern</button>
+                            <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"} onClick={() => changeCategory(elem.id)}>Ändern</button>
                         </div>
                     }
                 </div>)}

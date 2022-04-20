@@ -93,7 +93,7 @@ export default function CategoryList() {
                 <div className={"flex flex-row mt-2 p-8"} key={elem.id}>{<div className={"mr-4 mt-2 font-bold text-[#1e5a78] text-xl"}>{elem.categoryName}</div>}
                     <div className={"mr-4 mt-2 text-[#1e5a78]"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
                     <button
-                        className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-2 mt-2"}
+                        className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2"}
                         onClick={() => routeToTrueFalseQuestion(elem.categoryName)}>Fragen
                     </button>
                     <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteCategory(elem)}/>
