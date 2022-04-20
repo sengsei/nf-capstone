@@ -4,13 +4,12 @@ import axios from "axios";
 import mull from "../images/mull.png";
 
 
-
 export default function TrueFalseEditor() {
-    const[categoryName, setCategoryName] = useState('')
-    const[question, setQuestion] = useState('')
-    const[errorMessage, setErrorMessage] = useState('')
-    const[questions, setQuestions] = useState([] as Array<Question>)
-    const[questionState, setQuestionState] = useState('false')
+    const [categoryName, setCategoryName] = useState('')
+    const [question, setQuestion] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [questions, setQuestions] = useState([] as Array<Question>)
+    const [questionState, setQuestionState] = useState('false')
     const [editMode, setEditMode] = useState(-1)
     const [categories, setCategories] = useState([] as Array<Category>)
     const [image, setImage] = useState({} as File)
@@ -19,7 +18,7 @@ export default function TrueFalseEditor() {
     useEffect(() => {
         const timoutId = setTimeout(() => setErrorMessage(''), 10000)
         return () => clearTimeout(timoutId)
-    } , []);
+    }, []);
 
     const addQuestion = () => {
         const token = localStorage.getItem("token")
@@ -37,11 +36,11 @@ export default function TrueFalseEditor() {
             })
         })
             .then(response => {
-                if (response.ok){
+                if (response.ok) {
                     return response.json()
                 }
                 throw Error('Eine Frage kann nicht hinzugefügt werden.')
-            } )
+            })
             .then((data: Array<Question>) => data)
             .then(fetchAllQuestions)
             .then(() => setImageUrl(''))
@@ -140,10 +139,9 @@ export default function TrueFalseEditor() {
                 "Authorization": "Bearer " + token
             }
         })
-            .then(response =>
-            {
-                if(response.ok){
-                    return  response.json()
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
                 }
                 throw new Error('Es sind keine Kategorien zum Anzeigen vorhanden!')
 
@@ -171,39 +169,67 @@ export default function TrueFalseEditor() {
     }, [])
 
 
-    return(
-        <div className={"bg-[#D1EEE9] mx-6"}>
-            <div>
-                <input type={"file"} accept={".csv"} onChange={ev => importCsv(ev.target.files![0])}/>
-            </div>
-            <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
-            <select value={categoryName} onChange={ev => setCategoryName(ev.target.value)}>
-                <option value={''}>Wähle eine Kategorie</option>
-                {categories.map(e => <option key={e.id}>{e.categoryName}</option>)}
-            </select>
-            <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
-            <input type={"file"} accept={".png"} onChange={ev => {if (ev.target.files != null) {setImage(ev.target.files[0])}}}/>
-            <div>{image.size > 0 && <button onClick={uploadImage}>Upload</button>}</div>
-
-            {errorMessage ? <p>{errorMessage}</p> : <button  className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"} onClick={addQuestion}>Hinzufügen</button>}
-            <div>
-                {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
-                    <div onClick={() => setEditMode(index)}>{elem.question}</div>
-                    <img alt={"Löschen"} width={30} src={mull} onClick={() => deleteQuestion(elem)}/>
-
-
-                    {
-                        editMode === index
-                        &&
-                        <div>
-                            <input type={"text"} placeholder={"Frage"} value={question} onChange={ev => setQuestion(ev.target.value)}/>
-                            <input type={"text"}  placeholder={"Kategorie"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}/>
-                            <input type={"checkbox"} value={questionState} onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
-                            <button className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"}  onClick={() => changeQuestion(elem.id)}>Ändern</button>
-                        </div>
+    return (
+        <div>
+            <div className={"bg-[#fffaaf] mx-6"}>
+                <div>
+                    <label className={"font-bold text-[#1e5a78] ml-2"} htmlFor="html">CSV Upload</label>
+                    <input className={"ml-2"} type={"file"} accept={".csv"}
+                           onChange={ev => importCsv(ev.target.files![0])}/>
+                </div>
+                <input type={"text"} className={"block px-3 rounded ease-in-out mt-6 ml-2"} placeholder={"Frage"}
+                       value={question} onChange={ev => setQuestion(ev.target.value)}/>
+                <select className={"ml-2"} value={categoryName} onChange={ev => setCategoryName(ev.target.value)}>
+                    <option value={''}>Wähle eine Kategorie</option>
+                    {categories.map(e => <option key={e.id}>{e.categoryName}</option>)}
+                </select>
+                <input className={"ml-2"} type={"checkbox"} value={questionState}
+                       onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
+                <input className={"ml-2"} type={"file"} accept={".png"} onChange={ev => {
+                    if (ev.target.files != null) {
+                        setImage(ev.target.files[0])
                     }
-                </div>)}
+                }}/>
+                <div>{image.size > 0 &&
+                    <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
+                            onClick={uploadImage}>Upload</button>}</div>
 
+                {errorMessage ? <p>{errorMessage}</p> :
+                    <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
+                            onClick={addQuestion}>Hinzufügen</button>}
+
+            </div>
+
+            <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
+
+
+                <div>
+                    {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
+                        <div className={"font-bold text-[#1e5a78] ml-2"}
+                             onClick={() => setEditMode(index)}>{elem.question}</div>
+                        <img className={"ml-2"} alt={"Löschen"} width={30} src={mull}
+                             onClick={() => deleteQuestion(elem)}/>
+
+
+                        {
+                            editMode === index
+                            &&
+                            <div>
+                                <input type={"text"} placeholder={"Frage"} value={question}
+                                       onChange={ev => setQuestion(ev.target.value)}/>
+                                <input type={"text"} placeholder={"Kategorie"} value={categoryName}
+                                       onChange={ev => setCategoryName(ev.target.value)}/>
+                                <input type={"checkbox"} value={questionState}
+                                       onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
+                                <button
+                                    className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"}
+                                    onClick={() => changeQuestion(elem.id)}>Ändern
+                                </button>
+                            </div>
+                        }
+                    </div>)}
+
+                </div>
             </div>
         </div>
     )
