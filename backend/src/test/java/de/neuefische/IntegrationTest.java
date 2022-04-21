@@ -1,6 +1,7 @@
 package de.neuefische;
 
 import de.neuefische.category.Category;
+import de.neuefische.question.Question;
 import de.neuefische.user.LoginData;
 import de.neuefische.user.UserDocument;
 import org.junit.jupiter.api.Test;
@@ -98,8 +99,81 @@ class IntegrationTest {
         assertThat(getCategoryListResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(Objects.requireNonNull(getCategoryListResponse.getBody()).length).isEqualTo(0);
 
+        Question question = new Question();
+        question.setCategoryName("Java");
 
 
+        ResponseEntity<Question[]> addQuestionResponse = restTemplate.exchange(
+                "/api/questions/",
+                HttpMethod.POST,
+                new HttpEntity<>(question, bearerHeader),
+                Question[].class
+        );
+
+        Question[] createdQuestion = addQuestionResponse.getBody();
+        assert createdQuestion != null;
+        String questionId = createdQuestion[0].getId();
+
+        assertThat(addQuestionResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(createdQuestion.length).isEqualTo(1);
+        assertThat(createdQuestion[0].getCategoryName()).isEqualTo("Java");
+
+        Question changedQuestion = new Question();
+        changedQuestion.setCategoryName("Python");
+        changedQuestion.setQuestion("Python Frage");
+        changedQuestion.setQuestionState("true");
+
+        ResponseEntity<Question[]> changeQuestionResponse = restTemplate.exchange(
+                "/api/questions/" + questionId,
+                HttpMethod.PUT,
+                new HttpEntity<>(changedQuestion, bearerHeader),
+                Question[].class
+        );
+
+        Question[] changeQuestionResponseBody = changeQuestionResponse.getBody();
+
+        assertThat(changeQuestionResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assert changeQuestionResponseBody != null;
+        assertThat(changeQuestionResponseBody[0].getCategoryName()).isEqualTo("Python");
+
+        ResponseEntity<Question[]> getQuestionListResponse = restTemplate.exchange(
+                "/api/questions",
+                HttpMethod.GET,
+                new HttpEntity<>(bearerHeader),
+                Question[].class
+        );
+
+        assertThat(getQuestionListResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getQuestionListResponse.getBody()).length).isEqualTo(1);
+
+        ResponseEntity<Question[]> getQuestionListByCategoryResponse = restTemplate.exchange(
+                "/api/questions/" + "Python",
+                HttpMethod.GET,
+                new HttpEntity<>(bearerHeader),
+                Question[].class
+        );
+
+        assertThat(getQuestionListByCategoryResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getQuestionListByCategoryResponse.getBody()).length).isEqualTo(1);
+
+        ResponseEntity<Question[]> deleteQuestionResponse = restTemplate.exchange(
+                "/api/questions/" + questionId,
+                HttpMethod.DELETE,
+                new HttpEntity<>(changedQuestion, bearerHeader),
+                Question[].class
+        );
+
+        assertThat(deleteCategoryResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<Question[]> getQuestionListResponseAfterDelete = restTemplate.exchange(
+                "/api/questions",
+                HttpMethod.GET,
+                new HttpEntity<>(bearerHeader),
+                Question[].class
+        );
+
+        assertThat(getQuestionListResponseAfterDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getQuestionListResponseAfterDelete.getBody()).length).isEqualTo(0);
     }
 
 }
