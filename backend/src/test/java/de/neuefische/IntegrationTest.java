@@ -9,15 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,7 +22,7 @@ class IntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void integrationTest() {
+    void integrationTestCategory() {
 
         Category category = new Category();
         category.setCategoryName("Java");
@@ -51,13 +46,15 @@ class IntegrationTest {
         );
 
         Category[] createdCategory = addCategoryResponse.getBody();
+        assert createdCategory != null;
+        String categoryId = createdCategory[0].getId();
 
         assertThat(addCategoryResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(createdCategory.length).isEqualTo(1);
         assertThat(createdCategory[0].getCategoryName()).isEqualTo("Java");
 
         ResponseEntity<Category> getCategoryByIdResponse = restTemplate.exchange(
-                "/api/categories/" + createdCategory[0].getId(),
+                "/api/categories/" + categoryId,
                 HttpMethod.GET,
                 new HttpEntity<>(bearerHeader),
                 Category.class
@@ -66,10 +63,43 @@ class IntegrationTest {
         assertThat(getCategoryByIdResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getCategoryByIdResponse.getBody()).isEqualTo(createdCategory[0]);
 
+        Category changedCategory = new Category();
+        changedCategory.setCategoryName("Python");
+
+        ResponseEntity<Category[]> changeCategoryResponse = restTemplate.exchange(
+                "/api/categories/" + categoryId,
+                HttpMethod.PUT,
+                new HttpEntity<>(changedCategory, bearerHeader),
+                Category[].class
+        );
+
+        Category[] changeCategoryResponseBody = changeCategoryResponse.getBody();
+
+        assertThat(changeCategoryResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assert changeCategoryResponseBody != null;
+        assertThat(changeCategoryResponseBody[0].getCategoryName()).isEqualTo("Python");
+
+        ResponseEntity<Category[]> deleteCategoryResponse = restTemplate.exchange(
+                "/api/categories/" + categoryId,
+                HttpMethod.DELETE,
+                new HttpEntity<>(changedCategory, bearerHeader),
+                Category[].class
+        );
+
+        assertThat(deleteCategoryResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<Category[]> getCategoryListResponse = restTemplate.exchange(
+                "/api/categories",
+                HttpMethod.GET,
+                new HttpEntity<>(bearerHeader),
+                Category[].class
+        );
+
+        assertThat(getCategoryListResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getCategoryListResponse.getBody()).length).isEqualTo(0);
+
 
 
     }
-
-
 
 }
