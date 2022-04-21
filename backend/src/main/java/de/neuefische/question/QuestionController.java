@@ -1,8 +1,5 @@
 package de.neuefische.question;
 
-
-import de.neuefische.user.UserDocument;
-import de.neuefische.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
-    private final UserService userService;
+
 
     @GetMapping
     public Collection<Question> getQuestionList(Principal principal){
