@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import {TriviaQuizData} from "../model";
+import wahr from "../images/wahr.png";
+import falsch from "../images/falsch.png";
 
 export default function TriviaTrueFalse() {
 
@@ -43,18 +45,25 @@ export default function TriviaTrueFalse() {
     }
 
     return (
-        <div className={"bg-[#D1EEE9] mx-6"}>
-            <label htmlFor={"qname"}>Gebe die Anzahl der Fragen zwischen (1-10) ein:</label>
+        <div className={"bg-[#fffaaf] mx-6"}>
+            <label className={"font-bold text-[#1e5a78] text-xl"} htmlFor={"qname"}>Gebe die Anzahl der Fragen zwischen
+                (1-10) ein:</label>
             <input type={"number"} id={"qname"} placeholder={"Anzahl der Fragen"} min={"1"} max={"10"} value={amount}
                    onChange={ev => setAmount(ev.target.valueAsNumber)}/>
-            <button onClick={() => loadQuestions()}>Start</button>
+            <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2 text-2xl"}
+                    onClick={() => loadQuestions()}>Start
+            </button>
+
             {
                 errorMessage ? <p>{errorMessage}</p> :
-                    questions.map((elem, index) => <div id={index.toString()}
+                    questions.map((elem, index) => <div className={"font-bold text-[#1e5a78] text-xl"}
+                                                        id={index.toString()}
                                                         key={index}>{elem.question}
-                        <div>
-                            <button onClick={() => checkWrongAnswer(elem, index.toString())}>F</button>
-                            <button onClick={() => checkRightAnswer(elem, index.toString())}>W</button>
+                        <div className={"flex flex-row"}>
+                            <img alt={""} width={30} src={wahr}
+                                 onClick={() => checkWrongAnswer(elem, index.toString())}/>
+                            <img alt="" width={30} src={falsch}
+                                 onClick={() => checkRightAnswer(elem, index.toString())}/>
                         </div>
                     </div>)
 

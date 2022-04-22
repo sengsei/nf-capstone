@@ -3,6 +3,7 @@ import {Question} from "../model";
 import {useParams} from "react-router-dom";
 import wahr from "../images/wahr.png"
 import falsch from "../images/falsch.png"
+import repeat from "../images/repeat.png"
 
 
 export default function QuestionListTrueFalse() {
@@ -70,8 +71,8 @@ export default function QuestionListTrueFalse() {
 
     const checkWrongAnswer = (elem: Question) => {
         const elemById = document.getElementById(elem.id)!;
-        elem.questionState === 'false' ? elemById.setAttribute("style", 'background-color:green')
-            : elemById.setAttribute("style", 'background-color:red')
+        elem.questionState === 'false' ? elemById.setAttribute("style", 'background-color:#64c8b9')
+            : elemById.setAttribute("style", 'background-color:#ff9196')
         if (elem.questionState === 'false') {
             handleQuestionCount()
         }
@@ -79,8 +80,8 @@ export default function QuestionListTrueFalse() {
 
     const checkRightAnswer = (elem: Question) => {
         const elemById = document.getElementById(elem.id)!;
-        elem.questionState === 'true' ? elemById.setAttribute("style", 'background-color:green')
-            : elemById.setAttribute("style", 'background-color:red')
+        elem.questionState === 'true' ? elemById.setAttribute("style", 'background-color:#64c8b9')
+            : elemById.setAttribute("style", 'background-color:#ff9196')
         if (elem.questionState === 'true') {
             handleQuestionCount()
         }
@@ -88,15 +89,21 @@ export default function QuestionListTrueFalse() {
 
     return (
         <div>
-            <div className={"mx-6 font-bold text-[#1e5a78]"}>{questionCounter} von {numberOfAllQuestions}</div>
+            <div className={"mx-6 font-bold text-[#1e5a78] text-center text-2xl"}>{questionCounter} von {numberOfAllQuestions}
+
+            </div>
             <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <div
                     className={"font-bold text-[#1e5a78] text-xl"} id={elem.id}
                     key={elem.id}> {elem.question}
                     <div><img src={elem.imageUrl} alt={""}/></div>
-                    <img alt={""} width={30} src={wahr} onClick={() => checkRightAnswer(elem)}/>
-                    <img alt="" width={30} src={falsch} onClick={() => checkWrongAnswer(elem)}/>
+                    <div className={"flex felx-row"}>
+                        <img alt={""} width={30} src={wahr} onClick={() => checkRightAnswer(elem)}/>
+                        <img alt="" width={30} src={falsch} onClick={() => checkWrongAnswer(elem)}/>
+                        <img alt="" width={40} src={repeat} className={"pl-2"} onClick={() => window.location.reload()}/>
+                    </div>
                 </div>)}
+
             </div>
         </div>
     )
