@@ -195,34 +195,37 @@ export default function TrueFalseEditor() {
                             onClick={uploadImage}>Upload</button>}</div>
 
                 {errorMessage ? <p>{errorMessage}</p> :
-                    <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
+                    <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2 my-4"}
                             onClick={addQuestion}>Hinzufügen</button>}
+
 
             </div>
 
             <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
 
-
                 <div>
-                    {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div key={elem.id}>
-                        <div className={"font-bold text-[#1e5a78] ml-2"}
-                             onClick={() => setEditMode(index)}>{elem.question}</div>
+                    {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div className={"flex"}
+                                                                                                key={elem.id}>
                         <img className={"ml-2"} alt={"Löschen"} width={30} src={mull}
                              onClick={() => deleteQuestion(elem)}/>
+                        <div className={"font-bold text-[#1e5a78] ml-2"}
+                             onClick={() => setEditMode(index)}>{elem.question}</div>
 
 
                         {
                             editMode === index
                             &&
-                            <div>
-                                <input type={"text"} placeholder={"Frage"} value={question}
+                            <div className={"flex flex-row"}>
+                                <input className={"block px-3 rounded ease-in-out mt-6 ml-2"} type={"text"}
+                                       placeholder={"Frage"} value={question}
                                        onChange={ev => setQuestion(ev.target.value)}/>
-                                <input type={"text"} placeholder={"Kategorie"} value={categoryName}
+                                <input className={"block px-3 rounded ease-in-out mt-6 ml-2"} type={"text"}
+                                       placeholder={"Kategorie"} value={categoryName}
                                        onChange={ev => setCategoryName(ev.target.value)}/>
-                                <input type={"checkbox"} value={questionState}
+                                <input className={"mt-6 ml-2"} type={"checkbox"} value={questionState}
                                        onChange={ev => ev.target.checked ? setQuestionState("true") : setQuestionState("false")}/>
                                 <button
-                                    className={"border-none bg-[#A7C584] font-bold text-[#F6C915] rounded-md px-3 mt-2"}
+                                    className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-6 ml-2"}
                                     onClick={() => changeQuestion(elem.id)}>Ändern
                                 </button>
                             </div>
