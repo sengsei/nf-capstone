@@ -20,7 +20,6 @@ export default function Header() {
             <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('login')}>Login</button></div>
             <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => logout()}>Logout</button></div>
             <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('home')}>Home</button></div>
-            <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"}>Konto</button></div>
             <div><button className={"font-bold text-[#FFFFFF] text-2xl hover:bg-[#1e5a78]"} onClick={() => routeToPath('editormenue')}>Editor</button></div>
         </div>
     )
