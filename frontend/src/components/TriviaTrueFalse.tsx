@@ -34,14 +34,14 @@ export default function TriviaTrueFalse() {
 
     const checkWrongAnswer = (elem: TriviaQuizData, index: string) => {
         const elemById = document.getElementById(index)!;
-        elem.correct_answer === 'False' ? elemById.setAttribute("style", 'background-color:green')
-            : elemById.setAttribute("style", 'background-color:red')
+        elem.correct_answer === 'False' ? elemById.setAttribute("style", 'background-color:#ff9196')
+            : elemById.setAttribute("style", 'background-color:#64c8b9')
     }
 
     const checkRightAnswer = (elem: TriviaQuizData, index: string) => {
         const elemById = document.getElementById(index)!;
-        elem.correct_answer === 'True' ? elemById.setAttribute("style", 'background-color:green')
-            : elemById.setAttribute("style", 'background-color:red')
+        elem.correct_answer === 'True' ? elemById.setAttribute("style", 'background-color:#ff9196')
+            : elemById.setAttribute("style", 'background-color:#64c8b9')
     }
 
     return (
