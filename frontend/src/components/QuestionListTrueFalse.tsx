@@ -102,6 +102,7 @@ export default function QuestionListTrueFalse() {
                         <img alt="" width={30} src={falsch} onClick={() => checkWrongAnswer(elem)}/>
                         <img alt="" width={40} src={repeat} className={"pl-2"} onClick={() => window.location.reload()}/>
                     </div>
+                    <br/>
                 </div>)}
 
             </div>
