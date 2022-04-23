@@ -49,6 +49,9 @@ export default function Login(){
                 </div>
 
             </div>
+            <div className={"h-96 bg-[#1e5a78] mx-6"}>
+
+            </div>
 
         </div>
     )

@@ -201,7 +201,7 @@ export default function TrueFalseEditor() {
 
             </div>
 
-            <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
+            <div className={"overflow-auto h-96 bg-[#fffaaf] mx-6"}>
 
                 <div>
                     {errorMessage ? <p>{errorMessage}</p> : questions.map((elem, index) => <div className={"flex"}
@@ -233,6 +233,9 @@ export default function TrueFalseEditor() {
                     </div>)}
 
                 </div>
+            </div>
+            <div className={"h-40 bg-[#fffaaf] mx-6"}>
+
             </div>
         </div>
     )

@@ -58,6 +58,9 @@ export default function Register() {
                     <img alt={"login"} src={log}/>
                 </div>
             </div>
+            <div className={"h-96 bg-[#1e5a78] mx-6"}>
+
+            </div>
         </div>
 
     )

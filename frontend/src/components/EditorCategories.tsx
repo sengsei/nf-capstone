@@ -101,35 +101,40 @@ export default function EditorCategories() {
     }
 
     return (
-        <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
-            <input type={"text"} className={"block px-3 rounded ease-in-out mt-6 ml-2"} placeholder={"Kategorie"}
-                   value={category}
-                   onChange={ev => setCategory(ev.target.value)}/>
-            {errorMessage ? <p>{errorMessage}</p> :
-                <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
-                        id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
-            <div>
-                <br/>
-                {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div className={"flex flex-row"}
-                                                                                             key={elem.id}>
-                    <img className={"ml-2"} alt={"Löschen"} width={30} src={mull}
-                         onClick={() => deleteCategory(elem.id)}/>
-                    <div className={"font-bold text-[#1e5a78] ml-2"}
-                         onClick={() => setEditMode(index)}>{elem.categoryName}</div>
+        <div>
+            <div className={"overflow-auto h-96 bg-[#fffaaf] mx-6"}>
+                <input type={"text"} className={"block px-3 rounded ease-in-out mt-6 ml-2"} placeholder={"Kategorie"}
+                       value={category}
+                       onChange={ev => setCategory(ev.target.value)}/>
+                {errorMessage ? <p>{errorMessage}</p> :
+                    <button className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
+                            id="addBtn" onClick={addCategory} disabled={existing()}>Hinzufügen</button>}
+                <div>
+                    <br/>
+                    {errorMessage ? <p>{errorMessage}</p> : categories.map((elem, index) => <div
+                        className={"flex flex-row"}
+                        key={elem.id}>
+                        <img className={"ml-2"} alt={"Löschen"} width={30} src={mull}
+                             onClick={() => deleteCategory(elem.id)}/>
+                        <div className={"font-bold text-[#1e5a78] ml-2"}
+                             onClick={() => setEditMode(index)}>{elem.categoryName}</div>
 
-                    {
-                        editMode === index
-                        &&
-                        <div>
-                            <input className={"ml-10"} type={"text"} value={category} placeholder={"Kategorie"}
-                                   onChange={ev => setCategory(ev.target.value)}/>
-                            <button
-                                className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
-                                onClick={() => changeCategory(elem.id)}>Ändern
-                            </button>
-                        </div>
-                    }
-                </div>)}
+                        {
+                            editMode === index
+                            &&
+                            <div>
+                                <input className={"ml-10"} type={"text"} value={category} placeholder={"Kategorie"}
+                                       onChange={ev => setCategory(ev.target.value)}/>
+                                <button
+                                    className={"border-none bg-[#1e5a78] font-bold text-[#FFFFFF] rounded-md px-2 mt-2 ml-2"}
+                                    onClick={() => changeCategory(elem.id)}>Ändern
+                                </button>
+                            </div>
+                        }
+                    </div>)}
+                </div>
+            </div>
+            <div className={"h-80 bg-[#fffaaf] mx-6"}>
 
             </div>
         </div>
