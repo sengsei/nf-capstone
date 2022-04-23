@@ -234,7 +234,7 @@ export default function TrueFalseEditor() {
 
                 </div>
             </div>
-            <div className={"h-40 bg-[#fffaaf] mx-6"}>
+            <div className={"h-64 bg-[#fffaaf] mx-6"}>
 
             </div>
         </div>

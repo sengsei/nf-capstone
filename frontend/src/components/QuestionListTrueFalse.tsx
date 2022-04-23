@@ -92,7 +92,7 @@ export default function QuestionListTrueFalse() {
             <div className={"mx-6 font-bold text-[#1e5a78] text-center text-2xl"}>{questionCounter} von {numberOfAllQuestions}
 
             </div>
-            <div className={"overflow-auto h-96 bg-[#fffaaf] mx-6"}>
+            <div className={"overflow-auto h-96 bg-[#fffaaf] mx-6 my-4"}>
                 {errorMessage ? <p>{errorMessage}</p> : questions.map((elem) => <div
                     className={"font-bold text-[#1e5a78] text-xl"} id={elem.id}
                     key={elem.id}> {elem.question}
