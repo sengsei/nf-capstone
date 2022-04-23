@@ -105,7 +105,7 @@ export default function QuestionListTrueFalse() {
                 </div>)}
 
             </div>
-            <div className={"h-64 bg-[#fffaaf] mx-6"}>
+            <div className={"h-80 bg-[#fffaaf] mx-6"}>
 
             </div>
         </div>
