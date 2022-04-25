@@ -88,7 +88,7 @@ export default function CategoryList() {
 
     return (
         <div>
-        <div className={"overflow-scroll h-96 bg-[#fffaaf] mx-6"}>
+        <div className={"overflow-auto h-96 bg-[#fffaaf] mx-6 my-6"}>
             {errorMessage ? <p>{errorMessage}</p> : categories.map((elem) =>
                 <div className={"flex flex-row mt-2 p-8"} key={elem.id}>{<div className={"mr-4 mt-2 font-bold text-[#1e5a78] text-xl"}>{elem.categoryName}</div>}
                     <div className={"mr-4 mt-2 text-[#1e5a78]"}>{"[" + (questions.filter(e=> e.categoryName === elem.categoryName).length).toString(2) + "]"}<sub>2</sub></div>
@@ -101,7 +101,11 @@ export default function CategoryList() {
             )}
         </div>
 
-            <div className="flex flex-row mt-2 p-8 bg-[#1e5a78] mx-6">
+        <div className="h-64 bg-[#1e5a78] mx-6">
+
+        </div>
+
+            <div className="flex flex-row p-8 bg-[#1e5a78] mx-6">
                 <div>
                     <button className={"border-none bg-[#7ea87b] font-bold text-[#FFFFFF] rounded-md px-3 mt-2 mx-6"}
                             onClick={() => routeToPath('questions/trivia-tf')}>Trivia-Fragen

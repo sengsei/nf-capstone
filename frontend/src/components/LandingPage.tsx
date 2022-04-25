@@ -11,8 +11,8 @@ export default function LandingPage() {
     }
 
     return (
-        <div>
-            <div className={"flex flex-row bg-[#7ea87b] font-mono text-[#FFFFFF] mx-6"}>
+        <div className={"mb-8"}>
+            <div className={"flex flex-row bg-[#7ea87b] font-mono text-[#FFFFFF] h-96 mx-6"}>
                 <div className={"basis-1/2 p-8"}>
                     TRUTHY ist ein kostenloses Webangebot für Studierende,
                     die ihr Programmierwissen abfragen und erweitern möchten.
@@ -23,7 +23,7 @@ export default function LandingPage() {
                 <img className={"basis-1/2"} alt={"Schülerin mit Notebook"} width={"400"} src={andrea}/>
             </div>
             <div className={"flex flex-row bg-[#fffaaf] mx-6 h-96"}>
-                <div className={"basis-1/2 p-20"}><img alt={"codes"} width={300} src={codes}/></div>
+                <div className={"basis-1/2 p-20"}><img alt={"codes"} width={200} src={codes}/></div>
                 <div className={"basis-1/2 bg-[#1e5a78] font-mono text-[#FFFFFF] p-8"}>
                     Ganz einfach programmieren lernen!
                     <br/>
